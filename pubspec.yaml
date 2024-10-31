@@ -1,18 +1,16 @@
-name: project_sertifikasi
+name: project
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: 'none' 
 
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.3
+  sdk: ^3.5.2
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  dotted_border: ^2.0.0  # Tambahkan package dotted_border di sini
-  flutter_dash: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -20,11 +18,8 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
 flutter:
-  uses-material-design: true
   assets:
-    - assets/image/sertifikat.png
-    - assets/image/List.png
-    - assets/image/logo.png
-  
-
-
+    - asset/logo_polinema.png
+    - asset/sertifikat.png
+    - asset/List.png
+  uses-material-design: true
