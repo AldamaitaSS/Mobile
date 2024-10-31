@@ -23,49 +23,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0; // Menyimpan indeks tab yang dipilih
-
-  // Daftar widget yang akan ditampilkan pada masing-masing tab
-  static List<Widget> _pages = <Widget>[
-    dosenNavigasi.Navigasi(), // Navigasi dari dosen
-    pimpinanNavigasi.Navigasi(), // Navigasi dari pimpinan
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index; // Mengubah indeks saat item dipilih
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_selectedIndex], // Menampilkan halaman sesuai tab yang dipilih
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Dosen',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Pimpinan',
-          ),
-        ],
-        currentIndex: _selectedIndex, // Menunjukkan tab yang aktif
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped, // Menangani pemilihan tab
-      ),
-    );
-  }
-}
-
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -102,25 +59,25 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/image/logo.png',
-                        width: 120,
-                        height: 120,
-                      ),
-                      SizedBox(height: 30),
                       Text(
                         'SISTEM SERTIFIKASI',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 170),
+                      Image.asset(
+                        'asset/logo_polinema.png',
+                        width: 100,
+                        height: 100,
+                      ),
+                      SizedBox(height: 170),
                       Text(
                         'JTI POLINEMA',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
                         ),
@@ -144,6 +101,9 @@ class _SplashScreenState extends State<SplashScreen> {
 }
 
 class LoginPage extends StatelessWidget {
+  final TextEditingController nipController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,7 +134,7 @@ class LoginPage extends StatelessWidget {
                         children: [
                           SizedBox(height: 10),
                           Image.asset(
-                            'assets/image/logo.png',
+                            'asset/logo_polinema.png',
                             width: 70,
                             height: 70,
                           ),
@@ -198,6 +158,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           SizedBox(height: 20),
                           TextField(
+                            controller: nipController,
                             decoration: InputDecoration(
                               hintText: 'NIP',
                               filled: true,
@@ -210,6 +171,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           SizedBox(height: 15),
                           TextField(
+                            controller: passwordController,
                             decoration: InputDecoration(
                               hintText: 'Password',
                               filled: true,
@@ -226,10 +188,16 @@ class LoginPage extends StatelessWidget {
                             width: 100,
                             child: ElevatedButton(
                               onPressed: () {
+                                String nip = nipController.text.toLowerCase();
+                                Widget destinationPage = nip == 'pimpinan'
+                                    ? pimpinanNavigasi.Navigasi()
+                                    : dosenNavigasi.Navigasi();
+
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomeScreen()), // Arahkan ke HomeScreen
+                                      builder: (context) => HomeScreen(
+                                          destinationPage: destinationPage)),
                                 );
                               },
                               child: Text('LOGIN'),
@@ -257,3 +225,15 @@ class LoginPage extends StatelessWidget {
   }
 }
 
+class HomeScreen extends StatelessWidget {
+  final Widget destinationPage;
+
+  const HomeScreen({Key? key, required this.destinationPage}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: destinationPage,
+    );
+  }
+}

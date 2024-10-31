@@ -172,43 +172,17 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
   }
 
   Widget _buildSaveButton(BuildContext context) {
-    return Center(
+    return Center( // Agar tombol berada di tengah
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.5, // Lebar tombol 50% dari lebar layar
         child: ElevatedButton(
           onPressed: () {
-            // Tampilkan dialog ketika tombol ditekan
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.check_circle_outline, size: 80, color: Colors.green),
-                      SizedBox(height: 20),
-                      Text(
-                        'Unggah berhasil',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context); // Tutup dialog
-                        },
-                        child: Text('OK'),
-                      ),
-                    )
-                  ],
-                );
-              },
-            );
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Form berhasil disimpan')),
+              );
+            }
           },
           child: Text(
             'Simpan',
@@ -225,5 +199,4 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
       ),
     );
   }
-
 }
