@@ -225,15 +225,3 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  final Widget destinationPage;
-
-  const HomeScreen({Key? key, required this.destinationPage}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: destinationPage,
-    );
-  }
-}
