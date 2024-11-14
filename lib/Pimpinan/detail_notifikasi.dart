@@ -15,7 +15,7 @@ class DetailNotifikasiPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[800],
+        backgroundColor: Color(0xFF1F4C97),
         title: Text(
           "Notifikasi",
           style: TextStyle(color: Colors.white),
@@ -57,12 +57,12 @@ class DetailNotifikasiPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white,
-                        border: Border.all(color: Colors.blue[800]!, width: 2),
+                        border: Border.all(color: Color(0xFF1F4C97)!, width: 2),
                       ),
                       child: Icon(
                         Icons.notifications,
                         size: 30,
-                        color: Colors.blue[800],
+                        color: Color(0xFF1F4C97),
                       ),
                     ),
                     SizedBox(height: 10),
@@ -106,7 +106,7 @@ class DetailNotifikasiPage extends StatelessWidget {
                       },
                       child: Text("OK"),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue[800], // Latar biru
+                        backgroundColor: Color(0xFF1F4C97), // Latar biru
                       ),
                     ),
                   ],

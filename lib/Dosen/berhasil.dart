@@ -15,7 +15,7 @@ class BerhasilScreen extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: Colors.blue[800],
+        backgroundColor: Color(0xFF1F4C97),
       ),
       body: Stack(
         children: [

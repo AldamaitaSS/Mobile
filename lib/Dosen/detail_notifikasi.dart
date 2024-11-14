@@ -4,11 +4,12 @@ class DetailNotifikasiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[800], // Latar biru penuh di belakang
+      backgroundColor: Color(0xFF1F4C97), // Latar biru penuh di belakang
       appBar: AppBar(
-        backgroundColor: Colors.blue[800], // Warna biru untuk header
+        backgroundColor: Color(0xFF1F4C97), // Warna biru untuk header
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // Panah kembali putih
+          icon: Icon(Icons.arrow_back,
+              color: Colors.white), // Panah kembali putih
           onPressed: () {
             Navigator.pop(context);
           },
@@ -46,7 +47,8 @@ class DetailNotifikasiScreen extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Color(0xFFDBE8FD), // Warna biru muda (kode DBE8FD)
+                            color: Color(
+                                0xFFDBE8FD), // Warna biru muda (kode DBE8FD)
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -180,8 +182,9 @@ class DetailNotifikasiScreen extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                            backgroundColor: Colors.blue[800],
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 15),
+                            backgroundColor: Color(0xFF1F4C97),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -198,7 +201,8 @@ class DetailNotifikasiScreen extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 15),
                             backgroundColor: Colors.grey[300],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
