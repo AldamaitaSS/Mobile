@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:image_picker/image_picker.dart'; // Import image_picker
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class UploadScreen extends StatefulWidget {
   final Function(String) onFileUploaded; // Callback untuk mengembalikan path file yang diunggah
@@ -15,6 +15,7 @@ class UploadScreen extends StatefulWidget {
 class _UploadScreenState extends State<UploadScreen> {
   String _fileName = "Tidak ada file terpilih"; // Menyimpan nama file yang dipilih
   XFile? _selectedFile; // Menyimpan file yang dipilih
+  Image? _imagePreview; // Menyimpan gambar yang dipilih untuk ditampilkan
 
   // Fungsi untuk memilih file dari galeri
   Future<void> _pickFile() async {
@@ -24,6 +25,7 @@ class _UploadScreenState extends State<UploadScreen> {
     if (_selectedFile != null) {
       setState(() {
         _fileName = _selectedFile!.name; // Menyimpan nama file yang dipilih
+        _imagePreview = Image.file(File(_selectedFile!.path)); // Menyimpan gambar untuk ditampilkan
       });
       widget.onFileUploaded(_selectedFile!.path); // Mengirim path file ke form_upload.dart melalui callback
     }
@@ -87,11 +89,14 @@ class _UploadScreenState extends State<UploadScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.cloud_upload,
-                          size: 40,
-                          color: Color(0xFF1F4C97),
-                        ),
+                        if (_imagePreview != null) 
+                          _imagePreview!, // Menampilkan gambar yang dipilih
+                        if (_imagePreview == null) 
+                          Icon(
+                            Icons.cloud_upload,
+                            size: 40,
+                            color: Color(0xFF1F4C97),
+                          ),
                         SizedBox(height: 10),
                         GestureDetector(
                           onTap: _pickFile, // Memanggil fungsi untuk memilih file
