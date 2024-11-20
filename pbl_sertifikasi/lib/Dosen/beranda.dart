@@ -186,7 +186,7 @@ class BerandaScreen extends StatelessWidget {
                                         height: 150,
                                         width: 150,
                                         child: Image.asset(
-                                          'assets/image/sertifikat.png',
+                                          'assets/sertifikat.png',
                                           fit: BoxFit.contain,
                                         ),
                                       ),

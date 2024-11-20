@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import 'upload.dart';
 
 class CertificationUploadForm extends StatefulWidget {
@@ -22,35 +24,55 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
   String? _namaVendor;
   String? _namaFile;
 
-  // Fungsi untuk mengirim data ke API
+  // Fungsi untuk mengirim data ke API menggunakan MultipartRequest
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final apiUrl = 'http://192.168.1.49:8000/api/form_upload';
-      final data = {
-        'nomorSertifikasi': _nomorSertifikasi,
-        'tanggalPelaksanaan': _tanggalPelaksanaan,
-        'tanggalBerlaku': _tanggalBerlaku,
-        'namaKegiatan': _namaKegiatan,
-        'namaBidang': _namaBidang,
-        'namaVendor': _namaVendor,
-        'namaFile': _namaFile,
-      };
+      final apiUrl = 'http://192.168.1.49:8000/api/create_upload';
 
       try {
-        final response = await http.post(
-          Uri.parse(apiUrl),
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(data),
-        );
+        // Mengambil AuthProvider dan user ID dari context
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        final userId = authProvider.user?.id;
+
+        // Tambahkan debug log untuk memastikan user ID ada
+        print('User ID dari AuthProvider: $userId');
+
+        if (userId == null) {
+          _showDialog(context, 'Error', 'User tidak ditemukan. Silakan login ulang.');
+          return;
+        }
+
+        var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+
+        // Menambahkan field data seperti di Postman
+        request.fields['user_id'] = userId.toString();
+        request.fields['no_sertif'] = _nomorSertifikasi ?? '';
+        request.fields['nama_sertif'] = _namaKegiatan ?? '';
+        request.fields['tanggal_pelaksanaan'] = _tanggalPelaksanaan ?? '';
+        request.fields['tanggal_berlaku'] = _tanggalBerlaku ?? '';
+        request.fields['bidang_id'] = _namaBidang ?? '';
+        request.fields['nama_vendor'] = _namaVendor ?? '';
+
+        // Menambahkan file jika ada
+        if (_namaFile != null) {
+          var file = await http.MultipartFile.fromPath('image', _namaFile!);
+          request.files.add(file);
+        }
+
+        // Mengirim request
+        var response = await request.send();
 
         if (response.statusCode == 201) {
           _showDialog(context, 'Sukses', 'Data berhasil disimpan!');
         } else {
-          _showDialog(context, 'Error', 'Gagal menyimpan data.');
+          print('Status Code: ${response.statusCode}');
+          print('Response Body: ${await response.stream.bytesToString()}');
+          _showDialog(context, 'Error', 'Gagal menyimpan data. Status: ${response.statusCode}');
         }
       } catch (e) {
+        print('Error: $e');
         _showDialog(context, 'Error', 'Terjadi kesalahan. Silakan coba lagi.');
       }
     }
@@ -74,7 +96,6 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
     );
   }
 
-  // Tambahkan metode build di sini
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +131,7 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
                     _buildTextField('Nama Vendor', (value) => _namaVendor = value),
                     _buildFileUploadButton(context),
                     Spacer(),
-                    SizedBox(height: 40), // Menambahkan jarak lebih besar antara bagian atas dan tombol
+                    SizedBox(height: 40),
                     _buildSaveButton(context),
                     SizedBox(height: 50),
                   ],

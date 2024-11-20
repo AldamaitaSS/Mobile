@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
 
 // Import navigasi untuk dosen dan pimpinan
 import 'dosen/navigasi.dart' as dosenNavigasi;
@@ -23,6 +25,7 @@ Future<void> login(String username, String password, BuildContext context) async
 
     // Periksa respons dari server
     if (response.statusCode == 200) {
+      
       String role = username.toLowerCase();
       Widget destinationPage = role == 'pimpinan'
           ? pimpinanNavigasi.Navigasi()
@@ -78,7 +81,14 @@ Future<void> login(String username, String password, BuildContext context) async
 }
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

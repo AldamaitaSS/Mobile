@@ -1,10 +1,11 @@
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 class UploadScreen extends StatefulWidget {
-  final Function(String) onFileUploaded; // Callback untuk mengembalikan path file yang diunggah
+  final Function(String) onFileUploaded;
 
   UploadScreen({required this.onFileUploaded});
 
@@ -13,21 +14,23 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreenState extends State<UploadScreen> {
-  String _fileName = "Tidak ada file terpilih"; // Menyimpan nama file yang dipilih
-  XFile? _selectedFile; // Menyimpan file yang dipilih
-  Image? _imagePreview; // Menyimpan gambar yang dipilih untuk ditampilkan
+  String _fileName = "Tidak ada file terpilih";
 
-  // Fungsi untuk memilih file dari galeri
   Future<void> _pickFile() async {
     final ImagePicker _picker = ImagePicker();
-    _selectedFile = await _picker.pickImage(source: ImageSource.gallery); // Membuka galeri untuk memilih file
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
-    if (_selectedFile != null) {
+    if (pickedFile != null) {
       setState(() {
-        _fileName = _selectedFile!.name; // Menyimpan nama file yang dipilih
-        _imagePreview = Image.file(File(_selectedFile!.path)); // Menyimpan gambar untuk ditampilkan
+        _fileName = pickedFile.name; // Menggunakan nama asli file
       });
-      widget.onFileUploaded(_selectedFile!.path); // Mengirim path file ke form_upload.dart melalui callback
+
+      // Kirim hanya nama file ke parent widget atau backend
+      widget.onFileUploaded(pickedFile.name);
+    } else {
+      setState(() {
+        _fileName = "Tidak ada file terpilih";
+      });
     }
   }
 
@@ -49,8 +52,8 @@ class _UploadScreenState extends State<UploadScreen> {
       ),
       body: Center(
         child: Container(
-          width: 350, // Lebar tampilan unggah file
-          height: 450, // Tinggi tampilan unggah file
+          width: 350,
+          height: 450,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
@@ -75,8 +78,7 @@ class _UploadScreenState extends State<UploadScreen> {
               ),
               SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 32.0), // Padding untuk batas putus-putus
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: DottedBorder(
                   color: Colors.grey,
                   strokeWidth: 2,
@@ -89,17 +91,14 @@ class _UploadScreenState extends State<UploadScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (_imagePreview != null) 
-                          _imagePreview!, // Menampilkan gambar yang dipilih
-                        if (_imagePreview == null) 
-                          Icon(
-                            Icons.cloud_upload,
-                            size: 40,
-                            color: Color(0xFF1F4C97),
-                          ),
+                        Icon(
+                          Icons.cloud_upload,
+                          size: 40,
+                          color: Color(0xFF1F4C97),
+                        ),
                         SizedBox(height: 10),
                         GestureDetector(
-                          onTap: _pickFile, // Memanggil fungsi untuk memilih file
+                          onTap: _pickFile,
                           child: Text(
                             'Pilih berkas dari galeri',
                             style: TextStyle(
