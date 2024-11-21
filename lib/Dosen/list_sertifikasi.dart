@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'detail_sertifikat.dart';
+import 'package:dio/dio.dart';
+import 'detail_sertifikasi.dart';
 
 class ListSertifikasiPage extends StatefulWidget {
   const ListSertifikasiPage({super.key});
@@ -9,14 +10,38 @@ class ListSertifikasiPage extends StatefulWidget {
 }
 
 class _ListSertifikasiPageState extends State<ListSertifikasiPage> {
-  bool isTersediaSelected = true;
+  final Dio _dio = Dio();
+  final String baseUrl = 'http://192.168.57.133/web/public/api/sertifikasi';
+  List<dynamic> sertifikasiList = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchSertifikasi();
+  }
+
+  Future<void> _fetchSertifikasi() async {
+    try {
+      final response = await _dio.get(baseUrl);
+      setState(() {
+        sertifikasiList = response.data['data'];
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      print('Error fetching data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1F4C97), 
+        backgroundColor: const Color(0xFF1F4C97),
         foregroundColor: Colors.white,
         title: const Text('List Sertifikasi'),
         leading: IconButton(
@@ -26,42 +51,35 @@ class _ListSertifikasiPageState extends State<ListSertifikasiPage> {
           },
         ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          // List of Pelatihan
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                PelatihanItem(
-                  category: 'Business Management',
-                  title: 'Perancangan Pemasaran Online',
-                  institution: 'BNSP',
-                ),
-                PelatihanItem(
-                  category: 'Data Science',
-                  title: 'Associate Data Scientist',
-                  institution: 'LSP Digital',
-                ),
-                PelatihanItem(
-                  category: 'Web Developer',
-                  title: 'Junior Web Developer',
-                  institution: 'BPPTIK',
-                  onTap: () {
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DetailSertifikat(),
-                      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : sertifikasiList.isEmpty
+              ? const Center(child: Text('Tidak ada data sertifikasi'))
+              : ListView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  itemCount: sertifikasiList.length,
+                  itemBuilder: (context, index) {
+                    final sertifikasi = sertifikasiList[index];
+                    return PelatihanItem(
+                      category:
+                          sertifikasi['bidang_nama'] ?? 'Tidak ada bidang',
+                      title:
+                          sertifikasi['nama_sertifikasi'] ?? 'Tidak ada nama',
+                      institution:
+                          sertifikasi['jenis_nama'] ?? 'Tidak ada jenis',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailSertifikasiPage(
+                                sertifikasiId: sertifikasi['sertifikasi_id']),
+                          ),
+                        );
+                      },
                     );
                   },
                 ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -71,21 +89,20 @@ class PelatihanItem extends StatelessWidget {
   final String category;
   final String title;
   final String institution;
-  final VoidCallback? onTap; // Tambahkan onTap sebagai parameter opsional
+  final VoidCallback? onTap;
 
   const PelatihanItem({
     super.key,
     required this.category,
     required this.title,
     required this.institution,
-    this.onTap, // Inisialisasi onTap
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      // Menggunakan InkWell untuk mendeteksi klik
-      onTap: onTap, // Fungsi onTap yang dieksekusi saat item diklik
+      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
@@ -97,7 +114,7 @@ class PelatihanItem extends StatelessWidget {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: const Offset(0, 3), // Position of the shadow
+              offset: const Offset(0, 3),
             ),
           ],
         ),
