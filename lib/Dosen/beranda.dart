@@ -1,10 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'total_sertif.dart';
 import 'list_pelatihan.dart';
 import 'list_sertifikasi.dart';
 
-class BerandaScreen extends StatelessWidget {
+class BerandaScreen extends StatefulWidget {
   const BerandaScreen({Key? key}) : super(key: key);
+
+  @override
+  State<BerandaScreen> createState() => _BerandaScreenState();
+}
+
+class _BerandaScreenState extends State<BerandaScreen> {
+  final Dio _dio = Dio();
+  final String _sertifikasiUrl =
+      'http://10.208.93.220/web/public/api/sertifikasi';
+  final String _pelatihanUrl = 'http://10.208.93.220/web/public/api/pelatihan';
+
+  int _jumlahSertifikasi = 0;
+  int _jumlahPelatihan = 0;
+  bool _isLoadingSertifikasi = true;
+  bool _isLoadingPelatihan = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchJumlahSertifikasi();
+    _fetchJumlahPelatihan();
+  }
+
+  Future<void> _fetchJumlahSertifikasi() async {
+    try {
+      final response = await _dio.get(_sertifikasiUrl);
+      if (response.statusCode == 200) {
+        final data = response.data['data'] as List;
+        setState(() {
+          _jumlahSertifikasi = data.length;
+          _isLoadingSertifikasi = false;
+        });
+      } else {
+        throw Exception('Gagal memuat data dari server');
+      }
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        _isLoadingSertifikasi = false;
+      });
+    }
+  }
+
+  Future<void> _fetchJumlahPelatihan() async {
+    try {
+      final response = await _dio.get(_pelatihanUrl);
+      if (response.statusCode == 200) {
+        final data = response.data['data'] as List;
+        setState(() {
+          _jumlahPelatihan = data.length;
+          _isLoadingPelatihan = false;
+        });
+      } else {
+        throw Exception('Gagal memuat data dari server');
+      }
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        _isLoadingPelatihan = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +109,7 @@ class BerandaScreen extends StatelessWidget {
           ],
         ),
       ),
-      backgroundColor: Color(0xFF1F4C97),
+      backgroundColor: const Color(0xFF1F4C97),
       body: SafeArea(
         child: Column(
           children: [
@@ -155,11 +218,11 @@ class BerandaScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Padding(
-                  padding: EdgeInsets.only(left: 50.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 50.0),
                   child: Text(
                     '10',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 60,
                       fontWeight: FontWeight.w800,
                       color: Color(0xFF494949),
@@ -223,14 +286,14 @@ class BerandaScreen extends StatelessWidget {
                 context,
                 'Sertifikasi\nTersedia',
                 Icons.verified,
-                '10',
+                _isLoadingSertifikasi ? '...' : '$_jumlahSertifikasi',
                 () => _navigateToListSertifikasi(context),
               ),
               _buildCategoryCard(
                 context,
                 'Pelatihan\nTersedia',
                 Icons.school,
-                '10',
+                _isLoadingPelatihan ? '...' : '$_jumlahPelatihan',
                 () => _navigateToListPelatihan(context),
               ),
             ],
@@ -287,17 +350,17 @@ class BerandaScreen extends StatelessWidget {
     );
   }
 
-  void _navigateToListSertifikasi(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ListSertifikasiPage()),
-    );
-  }
-
   void _navigateToListPelatihan(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const ListPelatihanPage()),
+    );
+  }
+
+  void _navigateToListSertifikasi(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ListSertifikasiPage()),
     );
   }
 }
