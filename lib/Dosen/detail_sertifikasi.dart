@@ -12,8 +12,7 @@ class DetailSertifikasiPage extends StatefulWidget {
 
 class _DetailSertifikasiPageState extends State<DetailSertifikasiPage> {
   final Dio _dio = Dio();
-  final String baseUrl =
-      'http://192.168.57.133/web/public/api'; // Tambahkan /api
+  final String baseUrl = 'http://10.208.93.220/web/public/api';
   Map<String, dynamic>? _sertifikasiData;
   bool _isLoading = true;
 
@@ -21,17 +20,6 @@ class _DetailSertifikasiPageState extends State<DetailSertifikasiPage> {
   void initState() {
     super.initState();
     _fetchSertifikasiDetail();
-  }
-
-  // Hapus atau modifikasi metode getDetailSertifikasi jika tidak digunakan
-  Future<void> getDetailSertifikasi(int id) async {
-    try {
-      final response = await _dio.get('$baseUrl/sertifikasi/$id');
-      // Handle response
-      print(response.data);
-    } catch (e) {
-      print('Error: $e');
-    }
   }
 
   Future<void> _fetchSertifikasiDetail() async {
