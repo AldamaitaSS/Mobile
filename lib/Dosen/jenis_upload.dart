@@ -8,11 +8,7 @@ class JenisUploadScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Data',
-          style: TextStyle(color: Colors.white), // Warna teks diubah menjadi putih
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
+          style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Color(0xFF1F4C97),
       ),
@@ -63,19 +59,23 @@ class JenisUploadScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CertificationUploadForm(jenis: 'Sertifikasi'),
+                          builder: (context) =>
+                              CertificationUploadForm(jenis: 'Sertifikasi'),
                         ),
                       );
                     },
                     child: Text(
                       'Sertifikasi',
-                      style: TextStyle(color: Colors.white), // Ubah teks menjadi putih
+                      style: TextStyle(
+                          color: Colors.white), // Ubah teks menjadi putih
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF1F4C97), // Latar belakang biru tua
+                      backgroundColor:
+                          Color(0xFF1F4C97), // Latar belakang biru tua
                       textStyle: TextStyle(fontSize: 20),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15), // Atur lengkungan di sini
+                        borderRadius: BorderRadius.circular(
+                            15), // Atur lengkungan di sini
                       ),
                     ),
                   ),
@@ -90,19 +90,23 @@ class JenisUploadScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CertificationUploadForm(jenis: 'Pelatihan'),
+                          builder: (context) =>
+                              CertificationUploadForm(jenis: 'Pelatihan'),
                         ),
                       );
                     },
                     child: Text(
                       'Pelatihan',
-                      style: TextStyle(color: Colors.white), // Ubah teks menjadi putih
+                      style: TextStyle(
+                          color: Colors.white), // Ubah teks menjadi putih
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF1F4C97), // Latar belakang biru tua
+                      backgroundColor:
+                          Color(0xFF1F4C97), // Latar belakang biru tua
                       textStyle: TextStyle(fontSize: 20),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15), // Atur lengkungan di sini
+                        borderRadius: BorderRadius.circular(
+                            15), // Atur lengkungan di sini
                       ),
                     ),
                   ),

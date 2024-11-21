@@ -6,17 +6,9 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Colors.white, // Latar belakang putih full untuk seluruh layar
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Color(0xFF1F4C97), // Warna biru untuk AppBar
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,
-              color: Colors.white), // Panah kembali warna putih
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         title: Text(
           "Profil",
           style: TextStyle(color: Colors.white), // Tulisan header warna putih
@@ -78,7 +70,7 @@ class ProfileScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:Color(0xFF1F4C97), 
+                    backgroundColor: Color(0xFF1F4C97),
                   ),
                   child: Text(
                     "EDIT",

@@ -15,7 +15,10 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
     {"pengirim": "Admin", "pesan": "Admin merekomendasikan pelatihan ini."},
     {"pengirim": "Pimpinan", "pesan": "Pimpinan merekomendasikan webinar ini."},
     {"pengirim": "Admin", "pesan": "Admin mengirim pelatihan terbaru."},
-    {"pengirim": "Pimpinan", "pesan": "Pimpinan mengucapkan selamat tahun baru."},
+    {
+      "pengirim": "Pimpinan",
+      "pesan": "Pimpinan mengucapkan selamat tahun baru."
+    },
   ];
 
   // Fungsi untuk memfilter notifikasi berdasarkan pilihan filter
@@ -23,7 +26,9 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
     if (_selectedFilter == "Semua") {
       return notifikasiList;
     } else {
-      return notifikasiList.where((notifikasi) => notifikasi['pengirim'] == _selectedFilter).toList();
+      return notifikasiList
+          .where((notifikasi) => notifikasi['pengirim'] == _selectedFilter)
+          .toList();
     }
   }
 
@@ -32,15 +37,10 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF1F4C97),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // Panah kembali putih
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         title: Text(
           "Notifikasi",
-          style: TextStyle(color: Colors.white), // Tulisan header notifikasi putih
+          style:
+              TextStyle(color: Colors.white), // Tulisan header notifikasi putih
         ),
       ),
       body: Container(
@@ -61,17 +61,24 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
                       });
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                       margin: EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
-                        color: _isTerbaruSelected ? Color(0xFF1F4C97) : Colors.grey[200],
+                        color: _isTerbaruSelected
+                            ? Color(0xFF1F4C97)
+                            : Colors.grey[200],
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         "Terbaru",
                         style: TextStyle(
-                          fontWeight: _isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
-                          color: _isTerbaruSelected ? Colors.white : Colors.black, // Ubah warna berdasarkan status
+                          fontWeight: _isTerbaruSelected
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                          color: _isTerbaruSelected
+                              ? Colors.white
+                              : Colors.black, // Ubah warna berdasarkan status
                         ),
                       ),
                     ),
@@ -83,17 +90,24 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
                       });
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                       margin: EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
-                        color: !_isTerbaruSelected ? Color(0xFF1F4C97) : Colors.grey[200],
+                        color: !_isTerbaruSelected
+                            ? Color(0xFF1F4C97)
+                            : Colors.grey[200],
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         "Semua",
                         style: TextStyle(
-                          fontWeight: !_isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
-                          color: !_isTerbaruSelected ? Colors.white : Colors.black, // Ubah warna berdasarkan status
+                          fontWeight: !_isTerbaruSelected
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                          color: !_isTerbaruSelected
+                              ? Colors.white
+                              : Colors.black, // Ubah warna berdasarkan status
                         ),
                       ),
                     ),
@@ -119,16 +133,19 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.all(10),
-                itemCount: getFilteredNotifikasi().length, // Jumlah notifikasi yang sudah difilter
+                itemCount: getFilteredNotifikasi()
+                    .length, // Jumlah notifikasi yang sudah difilter
                 itemBuilder: (context, index) {
-                  final notifikasi = getFilteredNotifikasi()[index]; // Notifikasi yang sudah difilter
+                  final notifikasi = getFilteredNotifikasi()[
+                      index]; // Notifikasi yang sudah difilter
                   return GestureDetector(
                     onTap: () {
                       // Navigasi ke halaman detail ketika notifikasi ditekan
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailNotifikasiScreen(), // Halaman tujuan
+                          builder: (context) =>
+                              DetailNotifikasiScreen(), // Halaman tujuan
                         ),
                       );
                     },
@@ -136,7 +153,9 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
                       margin: EdgeInsets.symmetric(vertical: 10),
                       padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: _isTerbaruSelected ? Color(0xFFEDF6FF) : Colors.grey[300],
+                        color: _isTerbaruSelected
+                            ? Color(0xFFEDF6FF)
+                            : Colors.grey[300],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
@@ -152,7 +171,9 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
                               Text(
                                 notifikasi["pengirim"] ?? "Unknown",
                                 style: TextStyle(
-                                  fontWeight: _isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
+                                  fontWeight: _isTerbaruSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
                                   color: Colors.black,
                                 ),
                               ),
@@ -162,7 +183,9 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
                           Text(
                             notifikasi["pesan"] ?? "Pesan tidak tersedia",
                             style: TextStyle(
-                              fontWeight: _isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
+                              fontWeight: _isTerbaruSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                               color: Colors.black,
                             ),
                           ),
@@ -188,9 +211,12 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
         });
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6), // Padding kecil untuk kotak filter
+        padding: EdgeInsets.symmetric(
+            horizontal: 12, vertical: 6), // Padding kecil untuk kotak filter
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xFF1F4C97) : Colors.grey[200], // Warna background
+          color: isSelected
+              ? Color(0xFF1F4C97)
+              : Colors.grey[200], // Warna background
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(

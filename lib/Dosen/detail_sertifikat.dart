@@ -9,7 +9,7 @@ class DetailSertifikat extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          'Detail Sertifikasi',
+          'Detail Sertifikat',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -108,4 +108,3 @@ class DetailSertifikat extends StatelessWidget {
     );
   }
 }
-  
