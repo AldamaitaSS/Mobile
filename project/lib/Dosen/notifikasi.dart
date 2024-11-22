@@ -1,0 +1,208 @@
+import 'package:flutter/material.dart';
+import 'detail_notifikasi.dart'; // Pastikan file ini ada di project kamu
+
+class NotifikasiScreen extends StatefulWidget {
+  const NotifikasiScreen({super.key});
+
+  @override
+  _NotifikasiScreenState createState() => _NotifikasiScreenState();
+}
+
+class _NotifikasiScreenState extends State<NotifikasiScreen> {
+  bool _isTerbaruSelected = true;
+  String? _selectedFilter = "Semua";
+
+  // Contoh data notifikasi
+  final List<Map<String, String>> notifikasiList = [
+    {"pengirim": "Admin", "pesan": "Admin merekomendasikan pelatihan ini."},
+    {"pengirim": "Pimpinan", "pesan": "Pimpinan merekomendasikan webinar ini."},
+    {"pengirim": "Admin", "pesan": "Admin mengirim pelatihan terbaru."},
+    {"pengirim": "Pimpinan", "pesan": "Pimpinan mengucapkan selamat tahun baru."},
+  ];
+
+  // Fungsi untuk memfilter notifikasi berdasarkan pilihan filter
+  List<Map<String, String>> getFilteredNotifikasi() {
+    if (_selectedFilter == "Semua") {
+      return notifikasiList;
+    } else {
+      return notifikasiList.where((notifikasi) => notifikasi['pengirim'] == _selectedFilter).toList();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1F4C97),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white), // Panah kembali putih
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          "Notifikasi",
+          style: TextStyle(color: Colors.white), // Tulisan header notifikasi putih
+        ),
+      ),
+      body: Container(
+        color: Colors.white, // Background putih di belakang notifikasi
+        child: Column(
+          children: [
+            // Row untuk Terbaru dan Semua
+            Container(
+              color: Colors.white,
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isTerbaruSelected = true;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: BoxDecoration(
+                        color: _isTerbaruSelected ? const Color(0xFF1F4C97) : Colors.grey[200],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        "Terbaru",
+                        style: TextStyle(
+                          fontWeight: _isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
+                          color: _isTerbaruSelected ? Colors.white : Colors.black, // Ubah warna berdasarkan status
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isTerbaruSelected = false;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: BoxDecoration(
+                        color: !_isTerbaruSelected ? const Color(0xFF1F4C97) : Colors.grey[200],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        "Semua",
+                        style: TextStyle(
+                          fontWeight: !_isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
+                          color: !_isTerbaruSelected ? Colors.white : Colors.black, // Ubah warna berdasarkan status
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Kotak filter di bawah
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildFilterBox("Semua"),
+                  const SizedBox(width: 10), // Jarak antara kotak filter
+                  _buildFilterBox("Admin"),
+                  const SizedBox(width: 10), // Jarak antara kotak filter
+                  _buildFilterBox("Pimpinan"),
+                ],
+              ),
+            ),
+            // ListView untuk menampilkan notifikasi
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(10),
+                itemCount: getFilteredNotifikasi().length, // Jumlah notifikasi yang sudah difilter
+                itemBuilder: (context, index) {
+                  final notifikasi = getFilteredNotifikasi()[index]; // Notifikasi yang sudah difilter
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigasi ke halaman detail ketika notifikasi ditekan
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DetailNotifikasiScreen(), // Halaman tujuan
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: _isTerbaruSelected ? const Color(0xFFEDF6FF) : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                child: Icon(Icons.person),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                notifikasi["pengirim"] ?? "Unknown",
+                                style: TextStyle(
+                                  fontWeight: _isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            notifikasi["pesan"] ?? "Pesan tidak tersedia",
+                            style: TextStyle(
+                              fontWeight: _isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterBox(String title) {
+    bool isSelected = _selectedFilter == title;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedFilter = title; // Set filter yang dipilih
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), // Padding kecil untuk kotak filter
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF1F4C97) : Colors.grey[200], // Warna background
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black54, // Warna teks
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+}
