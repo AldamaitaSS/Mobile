@@ -12,7 +12,7 @@ class DetailPelatihanPage extends StatefulWidget {
 
 class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://10.208.93.220/web/public/api';
+  final String baseUrl = 'http://192.168.70.95/web/public/api';
   Map<String, dynamic>? _pelatihanData;
   bool _isLoading = true;
 
@@ -24,7 +24,8 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
 
   Future<void> _fetchPelatihanDetail() async {
     try {
-      final response = await _dio.get('$baseUrl/pelatihan/${widget.pelatihanId}');
+      final response =
+          await _dio.get('$baseUrl/pelatihan/${widget.pelatihanId}');
 
       setState(() {
         _pelatihanData = response.data['data'];
@@ -65,13 +66,15 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                       children: [
                         const SizedBox(height: 8),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: const Color(0xFFDBE8FD),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            _pelatihanData!['bidang_nama'] ?? 'Tidak ada bidang',
+                            _pelatihanData!['bidang_nama'] ??
+                                'Tidak ada bidang',
                             style: const TextStyle(
                               color: Color(0xFF616161),
                               fontSize: 14,
@@ -82,19 +85,25 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                         const SizedBox(height: 16),
                         Text(
                           _pelatihanData!['nama_pelatihan'] ?? 'Tidak ada nama',
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          _pelatihanData!['level_pelatihan_nama'] ?? 'Tidak ada tingkat',
-                          style: const TextStyle(color: Colors.grey)
-                        ),
+                            _pelatihanData!['level_pelatihan_nama'] ??
+                                'Tidak ada tingkat',
+                            style: const TextStyle(color: Colors.grey)),
                         const SizedBox(height: 16),
-                        _buildInfoRow('Vendor', _pelatihanData!['vendor_nama'] ?? 'Tidak ada vendor'),
-                        _buildInfoRow('Tanggal', _pelatihanData!['tanggal'] ?? 'Tidak ada tanggal'),
+                        _buildInfoRow(
+                            'Vendor',
+                            _pelatihanData!['vendor_nama'] ??
+                                'Tidak ada vendor'),
+                        _buildInfoRow('Tanggal',
+                            _pelatihanData!['tanggal'] ?? 'Tidak ada tanggal'),
                         const SizedBox(height: 30),
                         const Text(
                           'Deskripsi Program',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -111,7 +120,8 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF1F4C97),
                               foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 45, vertical: 10),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -139,7 +149,8 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
         children: [
           Expanded(
             flex: 2,
-            child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(label,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           Expanded(
             flex: 3,

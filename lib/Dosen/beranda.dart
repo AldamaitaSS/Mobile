@@ -14,8 +14,8 @@ class BerandaScreen extends StatefulWidget {
 class _BerandaScreenState extends State<BerandaScreen> {
   final Dio _dio = Dio();
   final String _sertifikasiUrl =
-      'http://10.208.93.220/web/public/api/sertifikasi';
-  final String _pelatihanUrl = 'http://10.208.93.220/web/public/api/pelatihan';
+      'http://192.168.70.95/web/public/api/sertifikasi';
+  final String _pelatihanUrl = 'http://192.168.70.95/web/public/api/pelatihan';
 
   int _jumlahSertifikasi = 0;
   int _jumlahPelatihan = 0;

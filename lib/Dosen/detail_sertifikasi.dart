@@ -12,7 +12,7 @@ class DetailSertifikasiPage extends StatefulWidget {
 
 class _DetailSertifikasiPageState extends State<DetailSertifikasiPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://10.208.93.220/web/public/api';
+  final String baseUrl = 'http://192.168.70.95/web/public/api';
   Map<String, dynamic>? _sertifikasiData;
   bool _isLoading = true;
 
