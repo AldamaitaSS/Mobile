@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http_parser/http_parser.dart';
 import 'dart:io';
 import '../auth_service.dart';
 
@@ -21,7 +22,7 @@ class _EditProfileState extends State<EditProfileScreen> {
   final AuthService _authService = AuthService();
   final Dio _dio = Dio();
   final ImagePicker _picker = ImagePicker();
-  
+
   late TextEditingController _emailController;
   late TextEditingController _usernameController;
   late TextEditingController _namaController;
@@ -34,7 +35,8 @@ class _EditProfileState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
     _emailController = TextEditingController(text: widget.userData['email']);
-    _usernameController = TextEditingController(text: widget.userData['username']);
+    _usernameController =
+        TextEditingController(text: widget.userData['username']);
     _namaController = TextEditingController(text: widget.userData['nama']);
     _nipController = TextEditingController(text: widget.userData['nip']);
     _avatar = widget.userData['avatar'];
@@ -107,12 +109,15 @@ class _EditProfileState extends State<EditProfileScreen> {
                                       width: 100,
                                       height: 100,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Icon(Icons.person, size: 50, color: Colors.white);
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Icon(Icons.person,
+                                            size: 50, color: Colors.white);
                                       },
                                     ),
                                   )
-                                : Icon(Icons.person, size: 50, color: Colors.white)),
+                                : Icon(Icons.person,
+                                    size: 50, color: Colors.white)),
                       ),
                       Positioned(
                         bottom: 0,
@@ -147,24 +152,29 @@ class _EditProfileState extends State<EditProfileScreen> {
                       onPressed: () => Navigator.pop(context),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       ),
-                      child: Text('Batal', style: TextStyle(color: Colors.white)),
+                      child:
+                          Text('Batal', style: TextStyle(color: Colors.white)),
                     ),
                     SizedBox(width: 10),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _updateProfile,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       ),
                       child: _isLoading
                           ? SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(color: Colors.white),
+                              child: CircularProgressIndicator(
+                                  color: Colors.white),
                             )
-                          : Text('Simpan', style: TextStyle(color: Colors.white)),
+                          : Text('Simpan',
+                              style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
@@ -180,7 +190,8 @@ class _EditProfileState extends State<EditProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(label,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         SizedBox(height: 5),
         Container(
           decoration: BoxDecoration(
@@ -191,7 +202,8 @@ class _EditProfileState extends State<EditProfileScreen> {
             controller: controller,
             decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -212,23 +224,38 @@ class _EditProfileState extends State<EditProfileScreen> {
 
     try {
       final token = await _authService.getToken();
+      if (token == null) throw Exception('Token not found');
 
-      // Membuat form data
+      // Debug print untuk melihat data yang akan dikirim
+      print('Updating profile with values:');
+      print('Email: ${_emailController.text}');
+      print('Username: ${_usernameController.text}');
+      print('Nama: ${_namaController.text}');
+      print('NIP: ${_nipController.text}');
+
+      // Prepare form data
       final formData = FormData.fromMap({
-        'email': _emailController.text,
-        'username': _usernameController.text,
-        'nama': _namaController.text,
-        'nip': _nipController.text,
+        'email': _emailController.text.trim(),
+        'username': _usernameController.text.trim(),
+        'nama': _namaController.text.trim(),
+        'nip': _nipController.text.trim(),
       });
 
-      // Menambahkan file avatar jika ada
+      // Add avatar if selected
       if (_imageFile != null) {
-        formData.files.add(MapEntry(
-          'avatar',
-          await MultipartFile.fromFile(_imageFile!.path),
-        ));
+        print('Adding image file: ${_imageFile!.path}');
+        formData.files.add(
+          MapEntry(
+            'avatar',
+            await MultipartFile.fromFile(
+              _imageFile!.path,
+              filename: _imageFile!.path.split('/').last,
+            ),
+          ),
+        );
       }
 
+      print('Sending request to: http://127.0.0.1:8000/api/user/update');
       final response = await _dio.post(
         'http://127.0.0.1:8000/api/user/update',
         data: formData,
@@ -236,21 +263,43 @@ class _EditProfileState extends State<EditProfileScreen> {
           headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',
+            'Content-Type': 'multipart/form-data',
+          },
+          followRedirects: false,
+          validateStatus: (status) {
+            print('Response status code: $status');
+            return true;
           },
         ),
       );
 
-      if (response.statusCode == 200) {
+      print('Response status: ${response.statusCode}');
+      print('Response data: ${response.data}');
+
+      if (response.statusCode == 200 && response.data['success'] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Profil berhasil diperbarui')),
+          SnackBar(
+            content: Text('Profil berhasil diperbarui'),
+            backgroundColor: Colors.green,
+          ),
         );
         Navigator.pop(context, true);
       } else {
-        throw Exception('Gagal memperbarui profil');
+        throw Exception(response.data['message'] ?? 'Gagal memperbarui profil');
       }
     } catch (e) {
+      print('Error detail: $e');
+      if (e is DioException) {
+        print('DioError type: ${e.type}');
+        print('DioError message: ${e.message}');
+        print('DioError response: ${e.response?.data}');
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal memperbarui profil: $e')),
+        SnackBar(
+          content: Text('Gagal memperbarui profil: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
       );
     } finally {
       setState(() => _isLoading = false);
