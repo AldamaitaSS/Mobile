@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/Pimpinan/detail__dosen.dart';
+import 'package:aplikasi_sertifikasi/Pimpinan/detail_dosen.dart';
 
 // Halaman List Dosen
 class ListDosenPage extends StatefulWidget {
@@ -40,8 +40,7 @@ class _ListDosenPageState extends State<ListDosenPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailDosen()),
+                      MaterialPageRoute(builder: (context) => DetailDosen()),
                     );
                   },
                 ),
