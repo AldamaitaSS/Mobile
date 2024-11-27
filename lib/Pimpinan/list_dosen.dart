@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../Pimpinan/detail_dosen.dart';
+import '/Pimpinan/detail__dosen.dart';
 
 // Halaman List Dosen
 class ListDosenPage extends StatefulWidget {

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Pimpinan/beranda.dart'; // Path relatif untuk mengimpor BerandaPage
-import 'list_dosen.dart';      // Impor dari Pimpinan
 import '../Pimpinan/notifikasi.dart';
 import '../Pimpinan/profile.dart';
-import '../Pimpinan/statistik.dart'; // Pastikan untuk mengimpor halaman chart Anda jika ada
 
 class Navigasi extends StatefulWidget {
   @override
@@ -15,7 +13,6 @@ class _NavigasiState extends State<Navigasi> {
 
   static final List<Widget> _pages = [
     BerandaPage(),        // BerandaPage dari dosen
-    ChartPage(),          // Tambahkan halaman Chart di sini
     NotifikasiPage(),     // Notifikasi
     ProfilePage(),        // Profil
   ];
@@ -43,10 +40,6 @@ class _NavigasiState extends State<Navigasi> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Beranda',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart), // Ikon chart
-              label: 'Statistik', // Label untuk ikon chart
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications_active),

@@ -11,13 +11,14 @@ class _EditProfileState extends State<EditProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white, // Latar belakang putih bersih full
       appBar: AppBar(
-        backgroundColor: Colors.blue[800],
+        backgroundColor: Color(0xFF1F4C97),
         title: Text(
           'Edit Profil',
           style: TextStyle(color: Colors.white), // Tulisan header warna putih
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // Panah kembali warna putih
+          icon: Icon(Icons.arrow_back,
+              color: Colors.white), // Panah kembali warna putih
           onPressed: () {
             Navigator.pop(context);
           },
@@ -34,7 +35,8 @@ class _EditProfileState extends State<EditProfileScreen> {
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage('assets/profile_placeholder.png'),
+                      backgroundImage:
+                          AssetImage('assets/profile_placeholder.png'),
                       child: Icon(Icons.person, size: 50, color: Colors.white),
                     ),
                     Positioned(
@@ -93,7 +95,8 @@ class _EditProfileState extends State<EditProfileScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),
-                    child: Text('Simpan', style: TextStyle(color: Colors.white)),
+                    child:
+                        Text('Simpan', style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),
@@ -120,7 +123,8 @@ class _EditProfileState extends State<EditProfileScreen> {
             initialValue: initialValue,
             decoration: InputDecoration(
               border: InputBorder.none, // Menghilangkan border
-              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             ),
           ),
         ),
@@ -144,7 +148,8 @@ class _EditProfileState extends State<EditProfileScreen> {
             obscureText: true,
             decoration: InputDecoration(
               border: InputBorder.none, // Menghilangkan border
-              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               hintText: hintText,
             ),
           ),

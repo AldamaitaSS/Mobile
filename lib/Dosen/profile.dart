@@ -6,11 +6,13 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Latar belakang putih full untuk seluruh layar
+      backgroundColor:
+          Colors.white, // Latar belakang putih full untuk seluruh layar
       appBar: AppBar(
-        backgroundColor: Colors.blue[800], // Warna biru untuk AppBar
+        backgroundColor: Color(0xFF1F4C97), // Warna biru untuk AppBar
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // Panah kembali warna putih
+          icon: Icon(Icons.arrow_back,
+              color: Colors.white), // Panah kembali warna putih
           onPressed: () {
             Navigator.pop(context);
           },
@@ -56,7 +58,8 @@ class ProfileScreen extends StatelessWidget {
               ),
               SizedBox(height: 30),
               // Field Email
-              _buildProfileField("Email", "dosen@universitas.ac.id", Icons.email),
+              _buildProfileField(
+                  "Email", "dosen@universitas.ac.id", Icons.email),
               SizedBox(height: 20),
               // Field Nama Pengguna
               _buildProfileField("Nama Pengguna", "username", null),
@@ -69,16 +72,13 @@ class ProfileScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EditProfileScreen(), // Pastikan EditProfileScreen ada
+                        builder: (context) =>
+                            EditProfileScreen(), // Pastikan EditProfileScreen ada
                       ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    backgroundColor: Colors.blue[800], // Warna biru untuk tombol
+                    backgroundColor:Color(0xFF1F4C97), 
                   ),
                   child: Text(
                     "EDIT",

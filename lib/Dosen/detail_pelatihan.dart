@@ -68,43 +68,7 @@ class DetailPelatihanPage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(16)),
-                      ),
-                      backgroundColor: Colors.white,
-                      isScrollControlled: true,
-                      builder: (context) => Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Bagikan pelatihan ini ke dosen!',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            SizedBox(
-                              height: 350,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: 6,
-                                itemBuilder: (context, index) {
-                                  return const UserListItem(
-                                    'Dr.Eng. Rosa Andire Asmara, ST, MT.',
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
+                    
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF1F4C97),
@@ -120,7 +84,7 @@ class DetailPelatihanPage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: const Text('Bagikan'),
+                  child: const Text('Daftar'),
                 ),
               ),
             ],

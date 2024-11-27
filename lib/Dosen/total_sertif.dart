@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
-import 'detail_pelatihan.dart'; // Pastikan file detail_pelatihan.dart diimpor
+import 'detail_sertifikat.dart';
 
-class ListPelatihanPage extends StatefulWidget {
-  const ListPelatihanPage({super.key});
-
-  @override
-  _ListPelatihanPageState createState() => _ListPelatihanPageState();
-}
-
-class _ListPelatihanPageState extends State<ListPelatihanPage> {
-  bool isTersediaSelected = true;
+class TotalSertifikasi extends StatelessWidget {
+  const TotalSertifikasi({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
-
-
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1F4C97), 
+        backgroundColor: const Color(0xFF1F4C97),
         foregroundColor: Colors.white,
-        title: const Text('List Pelatihan'),
+        title: const Text('Total Sertifikasi'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -32,33 +22,34 @@ class _ListPelatihanPageState extends State<ListPelatihanPage> {
       body: Column(
         children: [
           const SizedBox(height: 20),
-          // List of Pelatihan
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               children: [
                 PelatihanItem(
-                  category: 'Business Management',
-                  title: 'Perancangan Pemasaran Online',
-                  institution: 'BNSP',
+                  category: 'Programmer',
+                  title: 'Oracle Certified Associate (OCA)',
+                  institution: 'Oracle',
+                  onTap: () {},
                 ),
                 PelatihanItem(
-                  category: 'Data Science',
-                  title: 'Associate Data Scientist',
-                  institution: 'LSP Digital',
+                  category: 'IT Governance',
+                  title: 'ITIL 4 Foundation',
+                  institution: 'Axelos',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DetailSertifikat(),
+                      ),
+                    );
+                  },
                 ),
                 PelatihanItem(
                   category: 'Web Developer',
                   title: 'Junior Web Developer',
                   institution: 'BPPTIK',
-                  onTap: () {
-                    // Navigasi ke halaman detail pelatihan
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DetailPelatihanPage()),
-                    );
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
@@ -69,26 +60,24 @@ class _ListPelatihanPageState extends State<ListPelatihanPage> {
   }
 }
 
-// Widget untuk menampilkan setiap item pelatihan
 class PelatihanItem extends StatelessWidget {
   final String category;
   final String title;
   final String institution;
-  final VoidCallback? onTap; // Tambahkan onTap sebagai parameter opsional
+  final VoidCallback? onTap;
 
   const PelatihanItem({
     super.key,
     required this.category,
     required this.title,
     required this.institution,
-    this.onTap, // Inisialisasi onTap
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      // Menggunakan InkWell untuk mendeteksi klik
-      onTap: onTap, // Fungsi onTap yang dieksekusi saat item diklik
+      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
@@ -100,7 +89,7 @@ class PelatihanItem extends StatelessWidget {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: const Offset(0, 3), // Position of the shadow
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -113,7 +102,7 @@ class PelatihanItem extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Color(0xFFDBE8FD),
+                    color: const Color(0xFFDBE8FD),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(

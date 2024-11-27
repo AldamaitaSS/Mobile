@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
-import 'detail_pelatihan.dart'; // Pastikan file detail_pelatihan.dart diimpor
+import 'detail_sertifikat.dart';
 
-class ListPelatihanPage extends StatefulWidget {
-  const ListPelatihanPage({super.key});
+class ListSertifikasiPage extends StatefulWidget {
+  const ListSertifikasiPage({super.key});
 
   @override
-  _ListPelatihanPageState createState() => _ListPelatihanPageState();
+  _ListSertifikasiPageState createState() => _ListSertifikasiPageState();
 }
 
-class _ListPelatihanPageState extends State<ListPelatihanPage> {
+class _ListSertifikasiPageState extends State<ListSertifikasiPage> {
   bool isTersediaSelected = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
-
-
       appBar: AppBar(
         backgroundColor: const Color(0xFF1F4C97), 
         foregroundColor: Colors.white,
-        title: const Text('List Pelatihan'),
+        title: const Text('List Sertifikasi'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -52,11 +49,11 @@ class _ListPelatihanPageState extends State<ListPelatihanPage> {
                   title: 'Junior Web Developer',
                   institution: 'BPPTIK',
                   onTap: () {
-                    // Navigasi ke halaman detail pelatihan
-                    Navigator.push(
+                      Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DetailPelatihanPage()),
+                          builder: (context) => const DetailSertifikat(),
+                      ),
                     );
                   },
                 ),

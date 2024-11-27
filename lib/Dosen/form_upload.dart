@@ -1,98 +1,242 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../providers/auth_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:dio/dio.dart';
 import 'upload.dart';
+import '../auth_service.dart';
 
 class CertificationUploadForm extends StatefulWidget {
   final String jenis;
 
-  CertificationUploadForm({required this.jenis});
+  const CertificationUploadForm({Key? key, required this.jenis})
+      : super(key: key);
 
   @override
-  _CertificationUploadFormState createState() => _CertificationUploadFormState();
+  _CertificationUploadFormState createState() =>
+      _CertificationUploadFormState();
 }
 
 class _CertificationUploadFormState extends State<CertificationUploadForm> {
+  final Dio _dio = Dio();
+  final String baseUrl = 'http://127.0.0.1:8000/api';
   final _formKey = GlobalKey<FormState>();
+  bool _sedangMemuat = false;
+
+  // Data form
   String? _nomorSertifikasi;
-  String? _tanggalPelaksanaan;
-  String? _tanggalBerlaku;
+  DateTime? _tanggalPelaksanaan;
+  DateTime? _tanggalBerlaku;
   String? _namaKegiatan;
-  String? _namaBidang;
-  String? _namaVendor;
+  String? _bidangId;
+  String? _vendorId;
   String? _namaFile;
 
-  // Fungsi untuk mengirim data ke API menggunakan MultipartRequest
-  Future<void> _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+  // Data dropdown
+  List<Map<String, dynamic>> _daftarBidang = [];
+  List<Map<String, dynamic>> _daftarVendor = [];
 
-      final apiUrl = 'http://192.168.1.49:8000/api/create_upload';
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _ambilDataDropdown();
+      }
+    });
+  }
 
-      try {
-        // Mengambil AuthProvider dan user ID dari context
-        final authProvider = Provider.of<AuthProvider>(context, listen: false);
-        final userId = authProvider.user?.id;
+  Future<void> _pilihTanggal(BuildContext context, bool isPelaksanaan) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
 
-        // Tambahkan debug log untuk memastikan user ID ada
-        print('User ID dari AuthProvider: $userId');
-
-        if (userId == null) {
-          _showDialog(context, 'Error', 'User tidak ditemukan. Silakan login ulang.');
-          return;
-        }
-
-        var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
-
-        // Menambahkan field data seperti di Postman
-        request.fields['user_id'] = userId.toString();
-        request.fields['no_sertif'] = _nomorSertifikasi ?? '';
-        request.fields['nama_sertif'] = _namaKegiatan ?? '';
-        request.fields['tanggal_pelaksanaan'] = _tanggalPelaksanaan ?? '';
-        request.fields['tanggal_berlaku'] = _tanggalBerlaku ?? '';
-        request.fields['bidang_id'] = _namaBidang ?? '';
-        request.fields['nama_vendor'] = _namaVendor ?? '';
-
-        // Menambahkan file jika ada
-        if (_namaFile != null) {
-          var file = await http.MultipartFile.fromPath('image', _namaFile!);
-          request.files.add(file);
-        }
-
-        // Mengirim request
-        var response = await request.send();
-
-        if (response.statusCode == 201) {
-          _showDialog(context, 'Sukses', 'Data berhasil disimpan!');
+    if (picked != null &&
+        picked != (isPelaksanaan ? _tanggalPelaksanaan : _tanggalBerlaku)) {
+      setState(() {
+        if (isPelaksanaan) {
+          _tanggalPelaksanaan = picked;
         } else {
-          print('Status Code: ${response.statusCode}');
-          print('Response Body: ${await response.stream.bytesToString()}');
-          _showDialog(context, 'Error', 'Gagal menyimpan data. Status: ${response.statusCode}');
+          _tanggalBerlaku = picked;
         }
-      } catch (e) {
-        print('Error: $e');
-        _showDialog(context, 'Error', 'Terjadi kesalahan. Silakan coba lagi.');
+      });
+    }
+  }
+
+  Future<void> _ambilDataDropdown() async {
+    if (!mounted) return;
+
+    setState(() => _sedangMemuat = true);
+
+    try {
+      print('=== Debug Request ===');
+      print('Base URL: $baseUrl');
+
+      // Cek token JWT jika ada
+      final authService = AuthService();
+      final token = await authService.getToken();
+      print('Token: $token');
+
+      final responseBidang = await _dio.get(
+        '$baseUrl/bidang',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': token != null ? 'Bearer $token' : '',
+          },
+          validateStatus: (status) {
+            print('Status Code: $status');
+            return true; // Accept any status code for debugging
+          },
+        ),
+      );
+
+      print('Response Bidang Data: ${responseBidang.data}');
+
+      if (responseBidang.statusCode == 200) {
+        setState(() {
+          _daftarBidang = List<Map<String, dynamic>>.from(
+              responseBidang.data['data']?.map((item) => {
+                        'id': item['bidang_id']?.toString() ?? '',
+                        'name': item['bidang_nama'] ?? '',
+                      }) ??
+                  []);
+        });
+        print('Daftar Bidang: $_daftarBidang');
+      } else {
+        print('Error Response: ${responseBidang.data}');
+      }
+
+      // Lakukan hal yang sama untuk vendor
+      final responseVendor = await _dio.get(
+        '$baseUrl/vendor',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': token != null ? 'Bearer $token' : '',
+          },
+          validateStatus: (status) {
+            print('Vendor Status Code: $status');
+            return true;
+          },
+        ),
+      );
+
+      print('Response Vendor Data: ${responseVendor.data}');
+
+      if (responseVendor.statusCode == 200) {
+        setState(() {
+          _daftarVendor = List<Map<String, dynamic>>.from(
+              responseVendor.data['data']?.map((item) => {
+                        'id': item['vendor_id']?.toString() ?? '',
+                        'name': item['vendor_nama'] ?? '',
+                      }) ??
+                  []);
+        });
+        print('Daftar Vendor: $_daftarVendor');
+      } else {
+        print('Error Response Vendor: ${responseVendor.data}');
+      }
+    } catch (e) {
+      print('=== Error Details ===');
+      print('Error Type: ${e.runtimeType}');
+      print('Error Message: $e');
+      if (e is DioException) {
+        print('Response Data: ${e.response?.data}');
+        print('Response Headers: ${e.response?.headers}');
+        print('Request Options: ${e.requestOptions.toString()}');
+      }
+      _tampilkanPesan('Gagal memuat data: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _sedangMemuat = false);
       }
     }
   }
 
-  void _showDialog(BuildContext context, String title, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
+  Future<void> _kirimForm() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _sedangMemuat = true);
+    _formKey.currentState!.save();
+
+    try {
+      final authService = AuthService();
+      final userData = await authService.getUserData();
+      final userToken = userData['token'];
+      final userId = userData['user_id'];
+
+      if (userToken == null || userId == null) {
+        throw Exception('Silakan login ulang');
+      }
+
+      // Perbaikan tipe data Map
+      final formData = {
+        "user_id": userId.toString(),
+        "no_sertif":
+            _nomorSertifikasi ?? '', // Nilai default empty string jika null
+        "nama_sertif": _namaKegiatan ?? '',
+        "tanggal_pelaksanaan": _tanggalPelaksanaan != null
+            ? "${_tanggalPelaksanaan!.year}-${_tanggalPelaksanaan!.month.toString().padLeft(2, '0')}-${_tanggalPelaksanaan!.day.toString().padLeft(2, '0')}"
+            : '',
+        "tanggal_berlaku": _tanggalBerlaku != null
+            ? "${_tanggalBerlaku!.year}-${_tanggalBerlaku!.month.toString().padLeft(2, '0')}-${_tanggalBerlaku!.day.toString().padLeft(2, '0')}"
+            : '',
+        "bidang_id": _bidangId?.toString() ?? '',
+        "vendor_id": _vendorId?.toString() ?? '',
+      };
+
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse('$baseUrl/uploads'),
+      )
+        ..headers['Authorization'] = 'Bearer $userToken'
+        ..headers['Accept'] = 'application/json'
+        ..fields.addAll(
+            formData); // Sekarang formData sudah bertype Map<String, String>
+
+      if (_namaFile != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('file_sertif', _namaFile!),
         );
-      },
+      }
+
+      final response = await request.send();
+      final responseData = await response.stream.bytesToString();
+      final decodedResponse = json.decode(responseData);
+
+      if (response.statusCode == 201) {
+        _tampilkanPesan('Data berhasil disimpan!', isError: false);
+        _formKey.currentState?.reset();
+        setState(() {
+          _nomorSertifikasi = null;
+          _tanggalPelaksanaan = null;
+          _tanggalBerlaku = null;
+          _namaKegiatan = null;
+          _bidangId = null;
+          _vendorId = null;
+          _namaFile = null;
+        });
+      } else {
+        _tampilkanPesan(decodedResponse['message'] ?? 'Gagal menyimpan data');
+      }
+    } catch (e) {
+      _tampilkanPesan('Terjadi kesalahan: $e');
+    } finally {
+      setState(() => _sedangMemuat = false);
+    }
+  }
+
+  void _tampilkanPesan(String pesan, {bool isError = true}) {
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(pesan),
+        backgroundColor: isError ? Colors.red : Colors.green,
+      ),
     );
   }
 
@@ -100,115 +244,271 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Form ${widget.jenis}', style: TextStyle(color: Colors.white)),
+        title:
+            Text('Form ${widget.jenis}', style: TextStyle(color: Colors.white)),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         backgroundColor: Color(0xFF1F4C97),
       ),
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-          child: IntrinsicHeight(
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(16.0),
+      body: _sedangMemuat
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: EdgeInsets.all(16.0),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
-                      child: Text(widget.jenis, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    _bangunJudulForm(),
+                    _bangunInputTeks(
+                      'Nomor Sertifikasi',
+                      (value) => _nomorSertifikasi = value,
                     ),
-                    SizedBox(height: 20),
-                    _buildTextField('Nomor ${widget.jenis}', (value) => _nomorSertifikasi = value),
-                    _buildTextField('Tanggal Pelaksanaan', (value) => _tanggalPelaksanaan = value),
-                    _buildTextField('Tanggal Berlaku', (value) => _tanggalBerlaku = value),
-                    _buildTextField('Nama Kegiatan', (value) => _namaKegiatan = value),
-                    _buildTextField('Bidang', (value) => _namaBidang = value),
-                    _buildTextField('Nama Vendor', (value) => _namaVendor = value),
-                    _buildFileUploadButton(context),
-                    Spacer(),
-                    SizedBox(height: 40),
-                    _buildSaveButton(context),
-                    SizedBox(height: 50),
+                    _bangunInputTanggal(
+                      'Tanggal Pelaksanaan',
+                      _tanggalPelaksanaan,
+                      () => _pilihTanggal(context, true),
+                    ),
+                    _bangunInputTanggal(
+                      'Tanggal Berlaku',
+                      _tanggalBerlaku,
+                      () => _pilihTanggal(context, false),
+                    ),
+                    _bangunInputTeks(
+                      'Nama Kegiatan',
+                      (value) => _namaKegiatan = value,
+                    ),
+                    _bangunDropdown(
+                      'Pilih Bidang',
+                      _daftarBidang,
+                      (value) => setState(() => _bidangId = value),
+                    ),
+                    _bangunDropdown(
+                      'Pilih Vendor',
+                      _daftarVendor,
+                      (value) => setState(() => _vendorId = value),
+                      wajibDiisi: false,
+                    ),
+                    _bangunTombolUnggah(),
+                    _bangunTombolKirim(),
                   ],
                 ),
               ),
             ),
+    );
+  }
+
+  Widget _bangunJudulForm() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 20),
+      child: Center(
+        child: Text(
+          widget.jenis,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildTextField(String label, Function(String?) onSaved) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-        SizedBox(height: 8),
-        TextFormField(
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.grey[200],
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none,
+  Widget _bangunInputTeks(String label, Function(String?) onSaved) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          onSaved: onSaved,
-          validator: (value) => value == null || value.isEmpty ? 'Harap isi bidang ini' : null,
-        ),
-      ],
+          SizedBox(height: 8),
+          TextFormField(
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.grey[200],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ),
+            onSaved: onSaved,
+            validator: (value) =>
+                value?.isEmpty ?? true ? 'Harap isi field ini' : null,
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildFileUploadButton(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Unggah Berkas', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-        SizedBox(height: 8),
-        ElevatedButton.icon(
-          icon: Icon(Icons.cloud_upload, color: Colors.white),
-          label: Text('Tambah Berkas', style: TextStyle(color: Colors.white)),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UploadScreen(
-                onFileUploaded: (String fileName) => setState(() => _namaFile = fileName),
+  Widget _bangunInputTanggal(
+      String label, DateTime? tanggal, Function() onTap) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8),
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    tanggal != null
+                        ? "${tanggal.day.toString().padLeft(2, '0')}-${tanggal.month.toString().padLeft(2, '0')}-${tanggal.year}"
+                        : 'Pilih Tanggal',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Icon(Icons.calendar_today),
+                ],
               ),
             ),
           ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF1F4C97),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        ),
-        SizedBox(height: 10),
-        Text(
-          _namaFile != null ? 'File terpilih: $_namaFile' : 'Tidak ada file terpilih',
-          style: TextStyle(fontSize: 16, color: _namaFile == null ? Colors.red : Colors.black),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildSaveButton(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.5,
-        child: ElevatedButton(
-          onPressed: _submitForm,
-          child: Text('Simpan', style: TextStyle(color: Colors.white)),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF1F4C97),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            padding: EdgeInsets.symmetric(vertical: 16),
+  Widget _bangunDropdown(
+    String label,
+    List<Map<String, dynamic>> opsi,
+    Function(String?) onChanged, {
+    bool wajibDiisi = true,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          SizedBox(height: 8),
+          DropdownButtonFormField<String>(
+            isExpanded: true,
+            hint: Text('Pilih ${label.toLowerCase()}'),
+            value: label.contains('Bidang') ? _bidangId : _vendorId,
+            items: [
+              DropdownMenuItem<String>(
+                value: '',
+                child: Text('Pilih ${label.toLowerCase()}'),
+              ),
+              ...opsi.map((item) {
+                return DropdownMenuItem<String>(
+                  value: item['id'],
+                  child: Text(
+                    item['name'],
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              }).toList(),
+            ],
+            onChanged: onChanged,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.grey[200],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ),
+            validator: wajibDiisi
+                ? (value) => value == null || value.isEmpty
+                    ? 'Harap pilih salah satu'
+                    : null
+                : null,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _bangunTombolUnggah() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Unggah Berkas',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8),
+          ElevatedButton.icon(
+            icon: Icon(Icons.cloud_upload, color: Colors.white),
+            label: Text('Tambah Berkas', style: TextStyle(color: Colors.white)),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UploadScreen(
+                  onFileUploaded: (String fileName) =>
+                      setState(() => _namaFile = fileName),
+                ),
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF1F4C97),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          if (_namaFile != null) ...[
+            SizedBox(height: 8),
+            Text(
+              'File terpilih: $_namaFile',
+              style: TextStyle(fontSize: 14, color: Colors.black87),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _bangunTombolKirim() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _sedangMemuat ? null : _kirimForm,
+        child: Text(
+          _sedangMemuat ? 'Menyimpan...' : 'Simpan',
+          style: TextStyle(color: Colors.white),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xFF1F4C97),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 16),
         ),
       ),
     );
