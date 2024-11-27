@@ -27,9 +27,14 @@ class _EditProfileState extends State<EditProfileScreen> {
   late TextEditingController _usernameController;
   late TextEditingController _namaController;
   late TextEditingController _nipController;
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   String? _avatar;
   bool _isLoading = false;
   File? _imageFile;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void initState() {
@@ -44,22 +49,46 @@ class _EditProfileState extends State<EditProfileScreen> {
 
   Future<void> _pickImage() async {
     try {
-      final XFile? image = await _picker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 512,
-        maxHeight: 512,
-        imageQuality: 75,
+      // Tampilkan dialog pilihan sumber gambar
+      final ImageSource? source = await showDialog<ImageSource>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text('Pilih Sumber Gambar'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Kamera'),
+              onPressed: () => Navigator.pop(context, ImageSource.camera),
+            ),
+            TextButton(
+              child: Text('Galeri'),
+              onPressed: () => Navigator.pop(context, ImageSource.gallery),
+            ),
+          ],
+        ),
       );
 
-      if (image != null) {
-        setState(() {
-          _imageFile = File(image.path);
-        });
+      if (source != null) {
+        final XFile? image = await _picker.pickImage(
+          source: source,
+          maxWidth: 512,
+          maxHeight: 512,
+          imageQuality: 75,
+        );
+
+        if (image != null) {
+          setState(() {
+            _imageFile = File(image.path);
+          });
+          print('Image selected: ${image.path}');
+        }
       }
     } catch (e) {
       print('Error picking image: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal memilih gambar')),
+        SnackBar(
+          content: Text('Gagal memilih gambar: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -144,6 +173,118 @@ class _EditProfileState extends State<EditProfileScreen> {
                 _buildProfileField('Nama Pengguna', _usernameController),
                 SizedBox(height: 20),
                 _buildProfileField('NIP', _nipController),
+                SizedBox(height: 20),
+                // Password field
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Password Baru',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 5),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: TextFormField(
+                        controller: _passwordController,
+                        obscureText: _obscurePassword,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Color(0xFF1F4C97),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
+                          hintText:
+                              'Kosongkan jika tidak ingin mengubah password',
+                        ),
+                        validator: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            if (value.length < 6) {
+                              return 'Password minimal 6 karakter';
+                            }
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                // Konfirmasi Password field
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Konfirmasi Password Baru',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 5),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: TextFormField(
+                        controller: _confirmPasswordController,
+                        obscureText: _obscureConfirmPassword,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirmPassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Color(0xFF1F4C97),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
+                              });
+                            },
+                          ),
+                          hintText: 'Masukkan ulang password baru',
+                        ),
+                        validator: (value) {
+                          if (_passwordController.text.isNotEmpty) {
+                            if (value == null || value.isEmpty) {
+                              return 'Konfirmasi password harus diisi';
+                            }
+                            if (value != _passwordController.text) {
+                              return 'Password tidak sama';
+                            }
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    if (_passwordController.text.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          'Password minimal 6 karakter',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
                 SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -220,6 +361,18 @@ class _EditProfileState extends State<EditProfileScreen> {
   Future<void> _updateProfile() async {
     if (!_formKey.currentState!.validate()) return;
 
+    // Validasi password
+    if (_passwordController.text.isNotEmpty &&
+        _passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Password dan konfirmasi password harus sama'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     try {
@@ -232,27 +385,45 @@ class _EditProfileState extends State<EditProfileScreen> {
       print('Username: ${_usernameController.text}');
       print('Nama: ${_namaController.text}');
       print('NIP: ${_nipController.text}');
+      print('Password changed: ${_passwordController.text.isNotEmpty}');
 
       // Prepare form data
-      final formData = FormData.fromMap({
+      final Map<String, dynamic> formFields = {
         'email': _emailController.text.trim(),
         'username': _usernameController.text.trim(),
         'nama': _namaController.text.trim(),
         'nip': _nipController.text.trim(),
-      });
+      };
+
+      // Tambahkan password ke form data jika kedua field password terisi dan sama
+      if (_passwordController.text.isNotEmpty &&
+          _passwordController.text == _confirmPasswordController.text) {
+        formFields['password'] = _passwordController.text;
+      }
+
+      final formData = FormData.fromMap(formFields);
 
       // Add avatar if selected
+      // Di dalam _updateProfile(), bagian upload file:
+
       if (_imageFile != null) {
         print('Adding image file: ${_imageFile!.path}');
-        formData.files.add(
-          MapEntry(
-            'avatar',
-            await MultipartFile.fromFile(
-              _imageFile!.path,
-              filename: _imageFile!.path.split('/').last,
+        try {
+          String fileName = _imageFile!.path.split('/').last;
+          formData.files.add(
+            MapEntry(
+              'avatar',
+              await MultipartFile.fromFile(
+                _imageFile!.path,
+                filename: fileName,
+                contentType: MediaType('image', fileName.split('.').last),
+              ),
             ),
-          ),
-        );
+          );
+          print('Image added to form data: $fileName');
+        } catch (e) {
+          print('Error adding image to form data: $e');
+        }
       }
 
       print('Sending request to: http://127.0.0.1:8000/api/user/update');
@@ -312,6 +483,8 @@ class _EditProfileState extends State<EditProfileScreen> {
     _usernameController.dispose();
     _namaController.dispose();
     _nipController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 }
