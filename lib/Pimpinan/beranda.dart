@@ -4,7 +4,7 @@ import 'list_pelatihan.dart';
 import 'list_sertifikasi.dart';
 
 class BerandaPage extends StatelessWidget {
-  const BerandaPage({Key? key}) : super(key: key);
+  const BerandaPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,19 +12,19 @@ class BerandaPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF1F4C97),
         foregroundColor: Colors.white,
-        title: Row(
+        title: const Row(
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 18,
               backgroundColor: Color(0xFFD3D3D3),
               child: Icon(Icons.person, color: Color(0xFF1F4C97), size: 30),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text(
                     'Halo, Dr.Eng. Rosa Andire Asmara, ST, MT',
                     style: TextStyle(
@@ -79,11 +79,11 @@ class BerandaPage extends StatelessWidget {
   }
 
   Widget _buildTitle() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
+    return const Padding(
+      padding: EdgeInsets.only(left: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           SizedBox(height: 15),
           Text(
             'Sistem Sertifikasi',

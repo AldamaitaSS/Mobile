@@ -4,6 +4,8 @@ import '../Pimpinan/notifikasi.dart';
 import '../Pimpinan/profile.dart';
 
 class Navigasi extends StatefulWidget {
+  const Navigasi({super.key});
+
   @override
   _NavigasiState createState() => _NavigasiState();
 }
@@ -12,7 +14,7 @@ class _NavigasiState extends State<Navigasi> {
   int _selectedIndex = 0;
 
   static final List<Widget> _pages = [
-    BerandaPage(),        // BerandaPage dari dosen
+    const BerandaPage(),        // BerandaPage dari dosen
     NotifikasiPage(),     // Notifikasi
     ProfilePage(),        // Profil
   ];
@@ -28,7 +30,7 @@ class _NavigasiState extends State<Navigasi> {
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xFF1F4C97),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20.0),
@@ -57,9 +59,9 @@ class _NavigasiState extends State<Navigasi> {
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
           showUnselectedLabels: true,
-          selectedLabelStyle: TextStyle(color: Colors.white),
+          selectedLabelStyle: const TextStyle(color: Colors.white),
           unselectedLabelStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
-          selectedIconTheme: IconThemeData(
+          selectedIconTheme: const IconThemeData(
             color: Colors.white,
             size: 30,
           ),

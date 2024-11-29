@@ -5,7 +5,7 @@ class CertificationUploadForm extends StatefulWidget {
   final String jenis; // Tambahkan parameter 'jenis'
   
   // Constructor untuk menerima parameter 'jenis'
-  CertificationUploadForm({required this.jenis});
+  const CertificationUploadForm({super.key, required this.jenis});
 
   @override
   _CertificationUploadFormState createState() => _CertificationUploadFormState();
@@ -25,15 +25,15 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
       appBar: AppBar(
         title: Text(
           'Form ${widget.jenis}', // Mengganti judul berdasarkan jenis yang dipilih
-          style: TextStyle(color: Colors.white), // Warna teks putih
+          style: const TextStyle(color: Colors.white), // Warna teks putih
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // Warna ikon tombol back putih
+          icon: const Icon(Icons.arrow_back, color: Colors.white), // Warna ikon tombol back putih
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: Color(0xFF1F4C97),
+        backgroundColor: const Color(0xFF1F4C97),
       ),
       body: SingleChildScrollView(
         child: ConstrainedBox(
@@ -52,34 +52,34 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
                     Center(
                       child: Text(
                         widget.jenis, // Menampilkan jenis unggahan di tengah
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     _buildTextField('Nomor ${widget.jenis}', (value) {
                       _nomorSertifikasi = value;
                     }),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     _buildTextField('Tanggal Pelaksanaan', (value) {
                       _tanggalPelaksanaan = value;
                     }),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     _buildTextField('Tanggal Berlaku', (value) {
                       _tanggalBerlaku = value;
                     }),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     _buildTextField('Nama Kegiatan', (value) {
                       _namaKegiatan = value;
                     }),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     _buildFileUploadButton(context), // Kirim context untuk navigasi
-                    Spacer(), // Menambahkan spacer agar tombol simpan ada di bagian bawah
-                    SizedBox(height: 20), // Memberikan jarak antara isian form dan tombol
+                    const Spacer(), // Menambahkan spacer agar tombol simpan ada di bagian bawah
+                    const SizedBox(height: 20), // Memberikan jarak antara isian form dan tombol
                     _buildSaveButton(context), // Tombol Simpan
-                    SizedBox(height: 50), // Menambahkan sedikit jarak dari bawah layar
+                    const SizedBox(height: 50), // Menambahkan sedikit jarak dari bawah layar
                   ],
                 ),
               ),
@@ -96,9 +96,9 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         TextFormField(
           decoration: InputDecoration(
             filled: true,
@@ -124,14 +124,14 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Unggah Berkas',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         ElevatedButton.icon(
-          icon: Icon(Icons.cloud_upload, color: Colors.white),
-          label: Text(
+          icon: const Icon(Icons.cloud_upload, color: Colors.white),
+          label: const Text(
             'Tambah Berkas',
             style: TextStyle(color: Colors.white),
           ),
@@ -150,20 +150,20 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
             );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF1F4C97),
+            backgroundColor: const Color(0xFF1F4C97),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         if (_namaFile != null)
           Text(
             'File terpilih: $_namaFile',
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
         if (_namaFile == null)
-          Text(
+          const Text(
             'Tidak ada file terpilih',
             style: TextStyle(fontSize: 16, color: Colors.red),
           ),
@@ -180,20 +180,20 @@ class _CertificationUploadFormState extends State<CertificationUploadForm> {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Form berhasil disimpan')),
+                const SnackBar(content: Text('Form berhasil disimpan')),
               );
             }
           },
-          child: Text(
-            'Simpan',
-            style: TextStyle(color: Colors.white), // Teks putih
-          ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF1F4C97),
+            backgroundColor: const Color(0xFF1F4C97),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            padding: EdgeInsets.symmetric(vertical: 16), // Menambah padding vertikal
+            padding: const EdgeInsets.symmetric(vertical: 16), // Menambah padding vertikal
+          ),
+          child: Text(
+            'Simpan',
+            style: TextStyle(color: Colors.white), // Teks putih
           ),
         ),
       ),

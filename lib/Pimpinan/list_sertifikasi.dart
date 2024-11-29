@@ -33,12 +33,12 @@ class _ListSertifikasiPageState extends State<ListSertifikasiPage> {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               children: [
-                PelatihanItem(
+                const PelatihanItem(
                   category: 'Business Management',
                   title: 'Perancangan Pemasaran Online',
                   institution: 'BNSP',
                 ),
-                PelatihanItem(
+                const PelatihanItem(
                   category: 'Data Science',
                   title: 'Associate Data Scientist',
                   institution: 'LSP Digital',
@@ -102,7 +102,7 @@ class PelatihanItem extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Color(0xFFDBE8FD),
+                    color: const Color(0xFFDBE8FD),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(

@@ -29,7 +29,7 @@ class DetailPelatihanPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Color(0xFFDBE8FD),
+                  color: const Color(0xFFDBE8FD),
                   borderRadius: BorderRadius.circular(20), // Sudut melengkung
                 ),
                 child: const Text(
@@ -107,7 +107,7 @@ class DetailPelatihanPage extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF1F4C97),
+                    backgroundColor: const Color(0xFF1F4C97),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 45, vertical: 10),

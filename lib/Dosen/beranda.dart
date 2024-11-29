@@ -5,7 +5,7 @@ import 'list_pelatihan.dart';
 import 'list_sertifikasi.dart';
 
 class BerandaScreen extends StatefulWidget {
-  const BerandaScreen({Key? key}) : super(key: key);
+  const BerandaScreen({super.key});
 
   @override
   State<BerandaScreen> createState() => _BerandaScreenState();
@@ -14,8 +14,8 @@ class BerandaScreen extends StatefulWidget {
 class _BerandaScreenState extends State<BerandaScreen> {
   final Dio _dio = Dio();
   final String _sertifikasiUrl =
-      'http://192.168.70.95/web/public/api/sertifikasi';
-  final String _pelatihanUrl = 'http://192.168.70.95/web/public/api/pelatihan';
+      'http://192.168.51.73/web/public/api/sertifikasi';
+  final String _pelatihanUrl = 'http://192.168.51.73/web/public/api/pelatihan';
 
   int _jumlahSertifikasi = 0;
   int _jumlahPelatihan = 0;
@@ -75,19 +75,19 @@ class _BerandaScreenState extends State<BerandaScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF1F4C97),
         foregroundColor: Colors.white,
-        title: Row(
+        title: const Row(
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 18,
               backgroundColor: Color(0xFFD3D3D3),
               child: Icon(Icons.person, color: Color(0xFF1F4C97), size: 30),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text(
                     'Halo, Dr.Eng. Rosa Andire Asmara, ST, MT',
                     style: TextStyle(
@@ -142,11 +142,11 @@ class _BerandaScreenState extends State<BerandaScreen> {
   }
 
   Widget _buildTitle() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
+    return const Padding(
+      padding: EdgeInsets.only(left: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           SizedBox(height: 15),
           Text(
             'Sistem Sertifikasi',
@@ -218,11 +218,11 @@ class _BerandaScreenState extends State<BerandaScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.only(left: 50.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 50.0),
                   child: Text(
                     '10',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 60,
                       fontWeight: FontWeight.w800,
                       color: Color(0xFF494949),

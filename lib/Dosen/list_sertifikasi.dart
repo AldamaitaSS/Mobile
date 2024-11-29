@@ -11,7 +11,7 @@ class ListSertifikasiPage extends StatefulWidget {
 
 class _ListSertifikasiPageState extends State<ListSertifikasiPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://192.168.70.95/web/public/api/sertifikasi';
+  final String baseUrl = 'http://192.168.51.73/web/public/api/sertifikasi';
   List<dynamic> sertifikasiList = [];
   bool _isLoading = true;
 
@@ -127,7 +127,7 @@ class PelatihanItem extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Color(0xFFDBE8FD),
+                    color: const Color(0xFFDBE8FD),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(

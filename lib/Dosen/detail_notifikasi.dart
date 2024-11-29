@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
 class DetailNotifikasiScreen extends StatelessWidget {
+  const DetailNotifikasiScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF1F4C97), // Latar biru penuh di belakang
+      backgroundColor: const Color(0xFF1F4C97), // Latar biru penuh di belakang
       appBar: AppBar(
-        backgroundColor: Color(0xFF1F4C97), // Warna biru untuk header
+        backgroundColor: const Color(0xFF1F4C97), // Warna biru untuk header
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,
+          icon: const Icon(Icons.arrow_back,
               color: Colors.white), // Panah kembali putih
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           'Detail Pelatihan',
           style: TextStyle(color: Colors.white), // Tulisan header putih
         ),
@@ -25,7 +27,7 @@ class DetailNotifikasiScreen extends StatelessWidget {
             // Bagian latar putih full screen dari atas sampai bawah
             Container(
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white, // Latar putih
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16),
@@ -33,7 +35,7 @@ class DetailNotifikasiScreen extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -42,22 +44,22 @@ class DetailNotifikasiScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Color(
+                            color: const Color(
                                 0xFFDBE8FD), // Warna biru muda (kode DBE8FD)
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Web Developer',
                             style: TextStyle(color: Colors.black87),
                           ),
                         ),
-                        SizedBox(height: 16),
-                        Text(
+                        const SizedBox(height: 16),
+                        const Text(
                           'Junior Web Developer',
                           style: TextStyle(
                             fontSize: 22,
@@ -65,19 +67,19 @@ class DetailNotifikasiScreen extends StatelessWidget {
                             color: Colors.black87,
                           ),
                         ),
-                        SizedBox(height: 8),
-                        Text(
+                        const SizedBox(height: 8),
+                        const Text(
                           'BPPTIK',
                           style: TextStyle(color: Colors.grey),
                         ),
                         // Garis pembatas setelah BPPTIK
-                        SizedBox(height: 16),
-                        Divider(),
+                        const SizedBox(height: 16),
+                        const Divider(),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     // Bagian Pendaftaran, Program Pelatihan, dan Pelaksanaan
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -126,18 +128,18 @@ class DetailNotifikasiScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
-                    Divider(),
+                    const SizedBox(height: 20),
+                    const Divider(),
                     // Bagian Deskripsi Program
-                    Text(
+                    const Text(
                       'Deskripsi Program',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
+                    const SizedBox(height: 10),
+                    const Text(
                       'Junior Web Developer merupakan salah satu Skema '
                       'Pelatihan yang berbasis Standar Kompetensi Kerja Nasional '
                       'Indonesia (SKKNI) dengan skema Junior Web Developer. '
@@ -151,17 +153,17 @@ class DetailNotifikasiScreen extends StatelessWidget {
                         color: Colors.black87,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     // Persyaratan Peserta
-                    Text(
+                    const Text(
                       'Persyaratan Peserta',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
                     ),
-                    SizedBox(height: 5),
-                    Text(
+                    const SizedBox(height: 5),
+                    const Text(
                       '- Warga Negara Indonesia\n'
                       '- Usia Maksimal 29 Tahun pada saat mendaftar\n'
                       '- Lulusan SMK atau sederajat, D1, D2, D3, dan D4\n'
@@ -171,7 +173,7 @@ class DetailNotifikasiScreen extends StatelessWidget {
                         color: Colors.black87,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     // Tombol Bersedia dan Tidak
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -182,26 +184,26 @@ class DetailNotifikasiScreen extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 40, vertical: 15),
-                            backgroundColor: Color(0xFF1F4C97),
+                            backgroundColor: const Color(0xFF1F4C97),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Bersedia',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         ElevatedButton(
                           onPressed: () {
                             // Aksi ketika tombol "Tidak" ditekan
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 40, vertical: 15),
                             backgroundColor: Colors.grey[300],
                             shape: RoundedRectangleBorder(
@@ -215,7 +217,7 @@ class DetailNotifikasiScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

@@ -11,7 +11,7 @@ class ListPelatihanPage extends StatefulWidget {
 
 class _ListPelatihanPageState extends State<ListPelatihanPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://192.168.70.95/web/public/api/pelatihan';
+  final String baseUrl = 'http://192.168.51.73/web/public/api/pelatihan';
   List<dynamic> pelatihanList = [];
   bool _isLoading = true;
 

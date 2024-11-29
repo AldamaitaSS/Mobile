@@ -3,7 +3,7 @@ import 'package:project/Pimpinan/detail__dosen.dart';
 
 // Halaman List Dosen
 class ListDosenPage extends StatefulWidget {
-  const ListDosenPage({Key? key}) : super(key: key);
+  const ListDosenPage({super.key});
 
   @override
   _ListDosenPageState createState() => _ListDosenPageState();
@@ -90,10 +90,10 @@ class DosenItem extends StatelessWidget {
   final VoidCallback? onTap;
 
   const DosenItem({
-    Key? key,
+    super.key,
     required this.name,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

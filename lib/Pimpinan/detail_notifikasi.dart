@@ -5,7 +5,7 @@ class DetailNotifikasiPage extends StatelessWidget {
   final bool? isAccepted; // Status apakah rekomendasi diterima atau tidak
   final String alasan; // Alasan jika rekomendasi ditolak
 
-  DetailNotifikasiPage({
+  const DetailNotifikasiPage({super.key, 
     required this.namaDosen,
     this.isAccepted,
     this.alasan = "",
@@ -15,8 +15,8 @@ class DetailNotifikasiPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF1F4C97),
-        title: Text(
+        backgroundColor: const Color(0xFF1F4C97),
+        title: const Text(
           "Notifikasi",
           style: TextStyle(color: Colors.white),
         ),
@@ -34,7 +34,7 @@ class DetailNotifikasiPage extends StatelessWidget {
             Center(
               child: Container(
                 width: 300,
-                padding: EdgeInsets.all(30), // Memperlebar konten ke bawah
+                padding: const EdgeInsets.all(30), // Memperlebar konten ke bawah
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -43,7 +43,7 @@ class DetailNotifikasiPage extends StatelessWidget {
                       color: Colors.black.withOpacity(0.1),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(0, 2),
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
@@ -57,57 +57,57 @@ class DetailNotifikasiPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white,
-                        border: Border.all(color: Color(0xFF1F4C97)!, width: 2),
+                        border: Border.all(color: const Color(0xFF1F4C97), width: 2),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.notifications,
                         size: 30,
                         color: Color(0xFF1F4C97),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     // Menampilkan nama dosen
                     Text(
                       "Dosen $namaDosen",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500, // Medium bold
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     // Menampilkan status rekomendasi
                     Text(
                       isAccepted == true
                           ? "telah menerima rekomendasi pelatihan dari Anda"
                           : "telah menolak rekomendasi pelatihan dari Anda",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.black87,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     // Menampilkan alasan jika tidak diterima
                     if (isAccepted == false && alasan.isNotEmpty)
                       Text(
                         "Alasan: $alasan",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: Colors.red,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     // Tombol OK
                     ElevatedButton(
                       onPressed: () {
                         // Logika untuk menutup notifikasi
                         Navigator.pop(context);
                       },
-                      child: Text("OK"),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF1F4C97), // Latar biru
+                        backgroundColor: const Color(0xFF1F4C97), // Latar biru
                       ),
+                      child: Text("OK"),
                     ),
                   ],
                 ),

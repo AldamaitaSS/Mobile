@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DetailDosen extends StatelessWidget {
+  const DetailDosen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,8 +161,8 @@ class DetailDosen extends StatelessWidget {
             ),
 
             // Certification List
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
                   CertificationCard(
@@ -195,11 +197,11 @@ class CertificationCard extends StatelessWidget {
   final String organization;
 
   const CertificationCard({
-    Key? key,
+    super.key,
     required this.category,
     required this.title,
     required this.organization,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

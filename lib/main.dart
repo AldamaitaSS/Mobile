@@ -10,6 +10,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,6 +27,8 @@ class MyApp extends StatelessWidget {
 }
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -33,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => LoginPage()),
       );
@@ -44,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -60,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'SISTEM SERTIFIKASI',
                         style: TextStyle(
                           fontSize: 22,
@@ -68,14 +72,14 @@ class _SplashScreenState extends State<SplashScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 170),
+                      const SizedBox(height: 170),
                       Image.asset(
                         'asset/logo_polinema.png',
                         width: 100,
                         height: 100,
                       ),
-                      SizedBox(height: 170),
-                      Text(
+                      const SizedBox(height: 170),
+                      const Text(
                         'JTI POLINEMA',
                         style: TextStyle(
                           fontSize: 18,
@@ -86,8 +90,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 40.0),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 40.0),
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
@@ -102,6 +106,8 @@ class _SplashScreenState extends State<SplashScreen> {
 }
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -116,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
   void _login(BuildContext context) async {
     if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Username dan Password harus diisi')),
+        const SnackBar(content: Text('Username dan Password harus diisi')),
       );
       return;
     }
@@ -159,12 +165,12 @@ class _LoginPageState extends State<LoginPage> {
             break;
           default:
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Level pengguna tidak dikenali')),
+              const SnackBar(content: Text('Level pengguna tidak dikenali')),
             );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Username atau Password salah')),
+          const SnackBar(content: Text('Username atau Password salah')),
         );
       }
     } catch (e) {
@@ -173,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Terjadi kesalahan. Silakan coba lagi')),
+        const SnackBar(content: Text('Terjadi kesalahan. Silakan coba lagi')),
       );
     }
   }
@@ -182,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -203,14 +209,14 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Image.asset(
                         'asset/logo_polinema.png',
                         width: 70,
                         height: 70,
                       ),
-                      SizedBox(height: 15),
-                      Text(
+                      const SizedBox(height: 15),
+                      const Text(
                         'JTI POLINEMA',
                         style: TextStyle(
                           fontSize: 16,
@@ -218,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: Color(0xFF1F4C97),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextField(
                         controller: _usernameController,
                         decoration: InputDecoration(
@@ -226,14 +232,14 @@ class _LoginPageState extends State<LoginPage> {
                           filled: true,
                           fillColor: Colors.grey[200],
                           prefixIcon:
-                              Icon(Icons.person, color: Color(0xFF1F4C97)),
+                              const Icon(Icons.person, color: Color(0xFF1F4C97)),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none,
                           ),
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       TextField(
                         controller: _passwordController,
                         obscureText: _obscureText,
@@ -242,13 +248,13 @@ class _LoginPageState extends State<LoginPage> {
                           filled: true,
                           fillColor: Colors.grey[200],
                           prefixIcon:
-                              Icon(Icons.lock, color: Color(0xFF1F4C97)),
+                              const Icon(Icons.lock, color: Color(0xFF1F4C97)),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureText
                                   ? Icons.visibility
                                   : Icons.visibility_off,
-                              color: Color(0xFF1F4C97),
+                              color: const Color(0xFF1F4C97),
                             ),
                             onPressed: () {
                               setState(() {
@@ -262,20 +268,20 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 30),
+                      const SizedBox(height: 30),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : () => _login(context),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF1F4C97),
+                            backgroundColor: const Color(0xFF1F4C97),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 15),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
                           ),
                           child: _isLoading
-                              ? SizedBox(
+                              ? const SizedBox(
                                   height: 20,
                                   width: 20,
                                   child: CircularProgressIndicator(
@@ -283,7 +289,7 @@ class _LoginPageState extends State<LoginPage> {
                                     strokeWidth: 2,
                                   ),
                                 )
-                              : Text(
+                              : const Text(
                                   'LOGIN',
                                   style: TextStyle(
                                     fontSize: 16,

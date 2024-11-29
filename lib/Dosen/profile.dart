@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'edit_profile.dart';
 
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xFF1F4C97), // Warna biru untuk AppBar
-        title: Text(
+        backgroundColor: const Color(0xFF1F4C97), // Warna biru untuk AppBar
+        title: const Text(
           "Profil",
           style: TextStyle(color: Colors.white), // Tulisan header warna putih
         ),
@@ -24,15 +26,15 @@ class ProfileScreen extends StatelessWidget {
               CircleAvatar(
                 radius: 50,
                 backgroundColor: Colors.grey[300],
-                child: Icon(
+                child: const Icon(
                   Icons.person,
                   size: 50,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Nama Dosen dan NIP
-              Text(
+              const Text(
                 "NAMA DOSEN",
                 style: TextStyle(
                   fontSize: 24,
@@ -40,22 +42,22 @@ class ProfileScreen extends StatelessWidget {
                   color: Colors.black87,
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
+              const SizedBox(height: 8),
+              const Text(
                 "198XXXXXXXXXXXXXX",
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black87,
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               // Field Email
               _buildProfileField(
                   "Email", "dosen@universitas.ac.id", Icons.email),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Field Nama Pengguna
               _buildProfileField("Nama Pengguna", "username", null),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               // Tombol Edit
               Align(
                 alignment: Alignment.centerRight,
@@ -70,9 +72,9 @@ class ProfileScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF1F4C97),
+                    backgroundColor: const Color(0xFF1F4C97),
                   ),
-                  child: Text(
+                  child: const Text(
                     "EDIT",
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
@@ -92,15 +94,15 @@ class ProfileScreen extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
             color: Colors.grey[200], // Background field warna abu-abu
             borderRadius: BorderRadius.circular(8),
@@ -111,11 +113,11 @@ class ProfileScreen extends StatelessWidget {
               Expanded(
                 child: Text(
                   value,
-                  style: TextStyle(fontSize: 16, color: Colors.black87),
+                  style: const TextStyle(fontSize: 16, color: Colors.black87),
                 ),
               ),
               if (icon != null) ...[
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Icon(icon, color: Colors.black54), // Ikon untuk email
               ]
             ],

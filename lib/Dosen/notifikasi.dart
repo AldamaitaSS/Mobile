@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'detail_notifikasi.dart'; // Pastikan file ini ada di project kamu
 
 class NotifikasiScreen extends StatefulWidget {
+  const NotifikasiScreen({super.key});
+
   @override
   _NotifikasiScreenState createState() => _NotifikasiScreenState();
 }
@@ -36,8 +38,8 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF1F4C97),
-        title: Text(
+        backgroundColor: const Color(0xFF1F4C97),
+        title: const Text(
           "Notifikasi",
           style:
               TextStyle(color: Colors.white), // Tulisan header notifikasi putih
@@ -50,7 +52,7 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
             // Row untuk Terbaru dan Semua
             Container(
               color: Colors.white,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -62,11 +64,11 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
                     },
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                      margin: EdgeInsets.symmetric(horizontal: 5),
+                          const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
                         color: _isTerbaruSelected
-                            ? Color(0xFF1F4C97)
+                            ? const Color(0xFF1F4C97)
                             : Colors.grey[200],
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -91,11 +93,11 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
                     },
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                      margin: EdgeInsets.symmetric(horizontal: 5),
+                          const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
                         color: !_isTerbaruSelected
-                            ? Color(0xFF1F4C97)
+                            ? const Color(0xFF1F4C97)
                             : Colors.grey[200],
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -117,14 +119,14 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
             ),
             // Kotak filter di bawah
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   _buildFilterBox("Semua"),
-                  SizedBox(width: 10), // Jarak antara kotak filter
+                  const SizedBox(width: 10), // Jarak antara kotak filter
                   _buildFilterBox("Admin"),
-                  SizedBox(width: 10), // Jarak antara kotak filter
+                  const SizedBox(width: 10), // Jarak antara kotak filter
                   _buildFilterBox("Pimpinan"),
                 ],
               ),
@@ -132,7 +134,7 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
             // ListView untuk menampilkan notifikasi
             Expanded(
               child: ListView.builder(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 itemCount: getFilteredNotifikasi()
                     .length, // Jumlah notifikasi yang sudah difilter
                 itemBuilder: (context, index) {
@@ -150,11 +152,11 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
                       );
                     },
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      padding: EdgeInsets.all(15),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
                         color: _isTerbaruSelected
-                            ? Color(0xFFEDF6FF)
+                            ? const Color(0xFFEDF6FF)
                             : Colors.grey[300],
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -163,11 +165,11 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
                         children: [
                           Row(
                             children: [
-                              CircleAvatar(
+                              const CircleAvatar(
                                 backgroundColor: Colors.grey,
                                 child: Icon(Icons.person),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Text(
                                 notifikasi["pengirim"] ?? "Unknown",
                                 style: TextStyle(
@@ -179,7 +181,7 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(
                             notifikasi["pesan"] ?? "Pesan tidak tersedia",
                             style: TextStyle(
@@ -211,11 +213,11 @@ class _NotifikasiScreenState extends State<NotifikasiScreen> {
         });
       },
       child: Container(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
             horizontal: 12, vertical: 6), // Padding kecil untuk kotak filter
         decoration: BoxDecoration(
           color: isSelected
-              ? Color(0xFF1F4C97)
+              ? const Color(0xFF1F4C97)
               : Colors.grey[200], // Warna background
           borderRadius: BorderRadius.circular(10),
         ),

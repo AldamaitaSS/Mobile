@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
 class BerhasilScreen extends StatelessWidget {
+  const BerhasilScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Data',
           style: TextStyle(color: Colors.white),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: Color(0xFF1F4C97),
+        backgroundColor: const Color(0xFF1F4C97),
       ),
       body: Stack(
         children: [
@@ -34,11 +36,11 @@ class BerhasilScreen extends StatelessWidget {
                     color: Colors.black.withOpacity(0.2),
                     spreadRadius: 5,
                     blurRadius: 10,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(
@@ -71,7 +73,7 @@ void showBerhasilScreen(BuildContext context) {
   );
 
   // Kembali ke halaman sebelumnya setelah 3 detik
-  Future.delayed(Duration(seconds: 3), () {
+  Future.delayed(const Duration(seconds: 3), () {
     Navigator.popUntil(context, (route) => route.isFirst);
   });
 }

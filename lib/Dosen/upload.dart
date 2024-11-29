@@ -6,6 +6,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
 class UploadScreen extends StatefulWidget {
   final Function(String) onFileUploaded; // Callback untuk mengembalikan nama file
 
-  UploadScreen({required this.onFileUploaded}); // Constructor
+  const UploadScreen({super.key, required this.onFileUploaded}); // Constructor
 
   @override
   _UploadScreenState createState() => _UploadScreenState();
@@ -38,17 +40,17 @@ class _UploadScreenState extends State<UploadScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Data',
           style: TextStyle(color: Colors.white),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: Color(0xFF1F4C97),
+        backgroundColor: const Color(0xFF1F4C97),
       ),
       body: Center(
         child: Container(
@@ -62,18 +64,18 @@ class _UploadScreenState extends State<UploadScreen> {
                 color: Colors.black.withOpacity(0.2),
                 spreadRadius: 5,
                 blurRadius: 10,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
+              const Text(
                 'Unggah File',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 width: 300,
                 height: 250,
@@ -85,20 +87,20 @@ class _UploadScreenState extends State<UploadScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.cloud_upload,
                         size: 50,
                         color: Color(0xFF1F4C97),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       RichText(
                         text: TextSpan(
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           children: [
-                            TextSpan(text: 'Unggah berkas '),
+                            const TextSpan(text: 'Unggah berkas '),
                             TextSpan(
                               text: 'di sini',
-                              style: TextStyle(color: Color(0xFF1F4C97), fontWeight: FontWeight.bold),
+                              style: const TextStyle(color: Color(0xFF1F4C97), fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   _showFileDialog(context); // Tampilkan dialog berkas saat 'di sini' diklik
@@ -107,28 +109,28 @@ class _UploadScreenState extends State<UploadScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Text(
                         _fileName, // Menampilkan status file yang terpilih
-                        style: TextStyle(color: Colors.red),
+                        style: const TextStyle(color: Colors.red),
                       ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF1F4C97),
+                  backgroundColor: const Color(0xFF1F4C97),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                 ),
-                child: Text(
+                child: const Text(
                   'Simpan',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -146,8 +148,8 @@ class _UploadScreenState extends State<UploadScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Berkas Contoh'),
-          content: Text('Berkas contoh berhasil ditambahkan!'),
+          title: const Text('Berkas Contoh'),
+          content: const Text('Berkas contoh berhasil ditambahkan!'),
           actions: [
             TextButton(
               onPressed: () {
@@ -157,7 +159,7 @@ class _UploadScreenState extends State<UploadScreen> {
                 widget.onFileUploaded(_fileName); // Mengembalikan nama file ke form
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );

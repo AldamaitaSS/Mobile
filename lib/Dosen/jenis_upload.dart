@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'form_upload.dart'; // Import halaman form_upload
 
 class JenisUploadScreen extends StatelessWidget {
+  const JenisUploadScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Data',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFF1F4C97),
+        backgroundColor: const Color(0xFF1F4C97),
       ),
       body: Stack(
         children: [
@@ -25,7 +27,7 @@ class JenisUploadScreen extends StatelessWidget {
             child: Container(
               width: 400,
               height: 400,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xFFEDF6FF),
               ),
@@ -38,7 +40,7 @@ class JenisUploadScreen extends StatelessWidget {
             child: Container(
               width: 400,
               height: 400,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xFFEDF6FF),
               ),
@@ -51,7 +53,7 @@ class JenisUploadScreen extends StatelessWidget {
               children: [
                 // Box Sertifikasi
                 Container(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   width: 150, // Ukuran tombol
                   height: 200, // Ukuran tinggi tombol
                   child: ElevatedButton(
@@ -64,25 +66,25 @@ class JenisUploadScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Text(
-                      'Sertifikasi',
-                      style: TextStyle(
-                          color: Colors.white), // Ubah teks menjadi putih
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          Color(0xFF1F4C97), // Latar belakang biru tua
-                      textStyle: TextStyle(fontSize: 20),
+                          const Color(0xFF1F4C97), // Latar belakang biru tua
+                      textStyle: const TextStyle(fontSize: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                             15), // Atur lengkungan di sini
                       ),
                     ),
+                    child: Text(
+                      'Sertifikasi',
+                      style: TextStyle(
+                          color: Colors.white), // Ubah teks menjadi putih
+                    ),
                   ),
                 ),
                 // Box Pelatihan
                 Container(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   width: 150, // Ukuran tombol
                   height: 200, // Ukuran tinggi tombol
                   child: ElevatedButton(
@@ -95,19 +97,19 @@ class JenisUploadScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Text(
-                      'Pelatihan',
-                      style: TextStyle(
-                          color: Colors.white), // Ubah teks menjadi putih
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          Color(0xFF1F4C97), // Latar belakang biru tua
-                      textStyle: TextStyle(fontSize: 20),
+                          const Color(0xFF1F4C97), // Latar belakang biru tua
+                      textStyle: const TextStyle(fontSize: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                             15), // Atur lengkungan di sini
                       ),
+                    ),
+                    child: Text(
+                      'Pelatihan',
+                      style: TextStyle(
+                          color: Colors.white), // Ubah teks menjadi putih
                     ),
                   ),
                 ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
+
   @override
   _EditProfileState createState() => _EditProfileState();
 }
@@ -11,13 +13,13 @@ class _EditProfileState extends State<EditProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white, // Latar belakang putih bersih full
       appBar: AppBar(
-        backgroundColor: Color(0xFF1F4C97),
-        title: Text(
+        backgroundColor: const Color(0xFF1F4C97),
+        title: const Text(
           'Edit Profil',
           style: TextStyle(color: Colors.white), // Tulisan header warna putih
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,
+          icon: const Icon(Icons.arrow_back,
               color: Colors.white), // Panah kembali warna putih
           onPressed: () {
             Navigator.pop(context);
@@ -33,7 +35,7 @@ class _EditProfileState extends State<EditProfileScreen> {
               Center(
                 child: Stack(
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 50,
                       backgroundImage:
                           AssetImage('assets/profile_placeholder.png'),
@@ -48,7 +50,7 @@ class _EditProfileState extends State<EditProfileScreen> {
                           color: Colors.grey[300],
                         ),
                         child: IconButton(
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                           onPressed: () {
                             // Aksi untuk mengganti foto profil
                           },
@@ -58,22 +60,22 @@ class _EditProfileState extends State<EditProfileScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Field Email
               _buildProfileField('Email', 'email@example.com'),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Field Kata Sandi
               _buildPasswordField('Kata Sandi', 'Kata Sandi Baru'),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Field Nama Pengguna
               _buildProfileField('Nama Pengguna', 'Nama Pengguna'),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Field Nama Lengkap
               _buildProfileField('Nama', 'Nama Lengkap'),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Field NIP
               _buildProfileField('NIP', '1234567890'),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               // Tombol Batal dan Simpan
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -85,9 +87,9 @@ class _EditProfileState extends State<EditProfileScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
-                    child: Text('Batal', style: TextStyle(color: Colors.white)),
+                    child: const Text('Batal', style: TextStyle(color: Colors.white)),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
                       // Aksi untuk menyimpan perubahan
@@ -96,7 +98,7 @@ class _EditProfileState extends State<EditProfileScreen> {
                       backgroundColor: Colors.green,
                     ),
                     child:
-                        Text('Simpan', style: TextStyle(color: Colors.white)),
+                        const Text('Simpan', style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),
@@ -112,8 +114,8 @@ class _EditProfileState extends State<EditProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TextStyle(fontSize: 16)),
-        SizedBox(height: 5),
+        Text(label, style: const TextStyle(fontSize: 16)),
+        const SizedBox(height: 5),
         Container(
           decoration: BoxDecoration(
             color: Colors.grey[200], // Background abu-abu
@@ -121,7 +123,7 @@ class _EditProfileState extends State<EditProfileScreen> {
           ),
           child: TextFormField(
             initialValue: initialValue,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none, // Menghilangkan border
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -137,8 +139,8 @@ class _EditProfileState extends State<EditProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TextStyle(fontSize: 16)),
-        SizedBox(height: 5),
+        Text(label, style: const TextStyle(fontSize: 16)),
+        const SizedBox(height: 5),
         Container(
           decoration: BoxDecoration(
             color: Colors.grey[200], // Background abu-abu
@@ -149,7 +151,7 @@ class _EditProfileState extends State<EditProfileScreen> {
             decoration: InputDecoration(
               border: InputBorder.none, // Menghilangkan border
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               hintText: hintText,
             ),
           ),
