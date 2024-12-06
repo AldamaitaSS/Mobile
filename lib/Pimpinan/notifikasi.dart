@@ -15,9 +15,15 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
   // Contoh data notifikasi
   final List<Map<String, String>> notifikasiList = [
     {"pengirim": "Admin", "pesan": "Admin merekomendasikan pelatihan ini."},
-    {"pengirim": "Dosen", "pesan": "[nama dosen] menerima rekomendasi pelatihan dari anda."},
+    {
+      "pengirim": "Dosen",
+      "pesan": "[nama dosen] menerima rekomendasi pelatihan dari anda."
+    },
     {"pengirim": "Admin", "pesan": "Admin mengirim pelatihan terbaru."},
-    {"pengirim": "Dosen", "pesan": "[nama dosen] menerima rekomendasi pelatihan dari anda."},
+    {
+      "pengirim": "Dosen",
+      "pesan": "[nama dosen] menerima rekomendasi pelatihan dari anda."
+    },
   ];
 
   // Fungsi untuk memfilter notifikasi berdasarkan pilihan filter
@@ -25,7 +31,9 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
     if (_selectedFilter == "Semua") {
       return notifikasiList;
     } else {
-      return notifikasiList.where((notifikasi) => notifikasi['pengirim'] == _selectedFilter).toList();
+      return notifikasiList
+          .where((notifikasi) => notifikasi['pengirim'] == _selectedFilter)
+          .toList();
     }
   }
 
@@ -34,15 +42,10 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF1F4C97),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white), // Panah kembali putih
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         title: const Text(
           "Notifikasi",
-          style: TextStyle(color: Colors.white), // Tulisan header notifikasi putih
+          style:
+              TextStyle(color: Colors.white), // Tulisan header notifikasi putih
         ),
       ),
       body: Container(
@@ -63,17 +66,24 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
                       });
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 10),
                       margin: const EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
-                        color: _isTerbaruSelected ? const Color(0xFF1F4C97) : Colors.grey[200],
+                        color: _isTerbaruSelected
+                            ? const Color(0xFF1F4C97)
+                            : Colors.grey[200],
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         "Terbaru",
                         style: TextStyle(
-                          fontWeight: _isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
-                          color: _isTerbaruSelected ? Colors.white : Colors.black, // Ubah warna berdasarkan status
+                          fontWeight: _isTerbaruSelected
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                          color: _isTerbaruSelected
+                              ? Colors.white
+                              : Colors.black, // Ubah warna berdasarkan status
                         ),
                       ),
                     ),
@@ -85,17 +95,24 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
                       });
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 10),
                       margin: const EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
-                        color: !_isTerbaruSelected ? const Color(0xFF1F4C97) : Colors.grey[200],
+                        color: !_isTerbaruSelected
+                            ? const Color(0xFF1F4C97)
+                            : Colors.grey[200],
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         "Semua",
                         style: TextStyle(
-                          fontWeight: !_isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
-                          color: !_isTerbaruSelected ? Colors.white : Colors.black, // Ubah warna berdasarkan status
+                          fontWeight: !_isTerbaruSelected
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                          color: !_isTerbaruSelected
+                              ? Colors.white
+                              : Colors.black, // Ubah warna berdasarkan status
                         ),
                       ),
                     ),
@@ -121,9 +138,11 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(10),
-                itemCount: getFilteredNotifikasi().length, // Jumlah notifikasi yang sudah difilter
+                itemCount: getFilteredNotifikasi()
+                    .length, // Jumlah notifikasi yang sudah difilter
                 itemBuilder: (context, index) {
-                  final notifikasi = getFilteredNotifikasi()[index]; // Notifikasi yang sudah difilter
+                  final notifikasi = getFilteredNotifikasi()[
+                      index]; // Notifikasi yang sudah difilter
                   return GestureDetector(
                     onTap: () {
                       // Navigasi ke halaman detail ketika notifikasi ditekan
@@ -132,9 +151,12 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
                         MaterialPageRoute(
                           builder: (context) {
                             // Menentukan nilai untuk namaDosen, isAccepted, dan alasan
-                            String pengirim = notifikasi["pengirim"] ?? "Unknown";
-                            bool? isAccepted = false; // Atur sesuai dengan logika aplikasi Anda
-                            String alasan = "Tidak ada alasan"; // Atur sesuai dengan logika aplikasi Anda
+                            String pengirim =
+                                notifikasi["pengirim"] ?? "Unknown";
+                            bool? isAccepted =
+                                false; // Atur sesuai dengan logika aplikasi Anda
+                            String alasan =
+                                "Tidak ada alasan"; // Atur sesuai dengan logika aplikasi Anda
 
                             // Contoh: Jika pengirim adalah Admin, kita bisa menyetujui
                             if (pengirim == "Admin") {
@@ -142,8 +164,10 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
                             }
 
                             return DetailNotifikasiPage(
-                              namaDosen: pengirim, // Mengisi dengan nama pengirim
-                              isAccepted: isAccepted, // Mengisi dengan status penerimaan
+                              namaDosen:
+                                  pengirim, // Mengisi dengan nama pengirim
+                              isAccepted:
+                                  isAccepted, // Mengisi dengan status penerimaan
                               alasan: alasan, // Mengisi dengan alasan
                             );
                           },
@@ -154,7 +178,9 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
                       margin: const EdgeInsets.symmetric(vertical: 10),
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: _isTerbaruSelected ? const Color(0xFFEDF6FF) : Colors.grey[300],
+                        color: _isTerbaruSelected
+                            ? const Color(0xFFEDF6FF)
+                            : Colors.grey[300],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
@@ -170,7 +196,9 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
                               Text(
                                 notifikasi["pengirim"] ?? "Unknown",
                                 style: TextStyle(
-                                  fontWeight: _isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
+                                  fontWeight: _isTerbaruSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
                                   color: Colors.black,
                                 ),
                               ),
@@ -180,7 +208,9 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
                           Text(
                             notifikasi["pesan"] ?? "Pesan tidak tersedia",
                             style: TextStyle(
-                              fontWeight: _isTerbaruSelected ? FontWeight.bold : FontWeight.normal,
+                              fontWeight: _isTerbaruSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                               color: Colors.black,
                             ),
                           ),
@@ -206,9 +236,12 @@ class _NotifikasiScreenState extends State<NotifikasiPage> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), // Padding kecil untuk kotak filter
+        padding: const EdgeInsets.symmetric(
+            horizontal: 12, vertical: 6), // Padding kecil untuk kotak filter
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF1F4C97) : Colors.grey[200], // Warna background
+          color: isSelected
+              ? const Color(0xFF1F4C97)
+              : Colors.grey[200], // Warna background
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(

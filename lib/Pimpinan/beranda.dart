@@ -1,10 +1,96 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import '../auth_service.dart';
 import 'list_dosen.dart';
 import 'list_pelatihan.dart';
 import 'list_sertifikasi.dart';
 
-class BerandaPage extends StatelessWidget {
+class BerandaPage extends StatefulWidget {
   const BerandaPage({super.key});
+
+  @override
+  State<BerandaPage> createState() => _BerandaPageState();
+}
+
+class _BerandaPageState extends State<BerandaPage> {
+  final Dio _dio = Dio();
+  final AuthService _authService = AuthService();
+
+  final String _sertifikasiUrl =
+      'http://192.168.70.53/web/public/api/sertifikasi';
+  final String _pelatihanUrl = 'http://192.168.70.53/web/public/api/pelatihan';
+
+  String _namaPengguna = '';
+  int _jumlahSertifikasi = 0;
+  int _jumlahPelatihan = 0;
+
+  bool _isLoadingNama = true;
+  bool _isLoadingSertifikasi = true;
+  bool _isLoadingPelatihan = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchNamaPengguna();
+    _fetchJumlahSertifikasi();
+    _fetchJumlahPelatihan();
+  }
+
+  Future<void> _fetchNamaPengguna() async {
+    try {
+      final prefs = await _authService.getUserData();
+      final nama = prefs['nama'];
+      setState(() {
+        _namaPengguna = nama ?? '';
+        _isLoadingNama = false;
+      });
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        _isLoadingNama = false;
+      });
+    }
+  }
+
+  Future<void> _fetchJumlahSertifikasi() async {
+    try {
+      final response = await _dio.get(_sertifikasiUrl);
+      if (response.statusCode == 200) {
+        final data = response.data['data'] as List;
+        setState(() {
+          _jumlahSertifikasi = data.length;
+          _isLoadingSertifikasi = false;
+        });
+      } else {
+        throw Exception('Gagal memuat data dari server');
+      }
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        _isLoadingSertifikasi = false;
+      });
+    }
+  }
+
+  Future<void> _fetchJumlahPelatihan() async {
+    try {
+      final response = await _dio.get(_pelatihanUrl);
+      if (response.statusCode == 200) {
+        final data = response.data['data'] as List;
+        setState(() {
+          _jumlahPelatihan = data.length;
+          _isLoadingPelatihan = false;
+        });
+      } else {
+        throw Exception('Gagal memuat data dari server');
+      }
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        _isLoadingPelatihan = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,28 +98,28 @@ class BerandaPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF1F4C97),
         foregroundColor: Colors.white,
-        title: const Row(
+        title: Row(
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 18,
               backgroundColor: Color(0xFFD3D3D3),
               child: Icon(Icons.person, color: Color(0xFF1F4C97), size: 30),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Halo, Dr.Eng. Rosa Andire Asmara, ST, MT',
-                    style: TextStyle(
+                    _isLoadingNama ? 'Memuat...' : 'Halo, $_namaPengguna',
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  Text(
+                  const Text(
                     'Selamat datang di Sistem Sertifikasi',
                     style: TextStyle(
                       fontSize: 14,
@@ -114,18 +200,15 @@ class BerandaPage extends StatelessWidget {
           topRight: Radius.circular(25),
         ),
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            _buildDosenCard(context),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: _buildCategorySection(context),
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          _buildDosenCard(context),
+          Expanded(
+            child: _buildCategorySection(context),
+          ),
+        ],
       ),
     );
   }
@@ -158,11 +241,11 @@ class BerandaPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Padding(
-                  padding: EdgeInsets.only(left: 50.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 50.0),
                   child: Text(
-                    '50',
-                    style: TextStyle(
+                    '20',
+                    style: const TextStyle(
                       fontSize: 60,
                       fontWeight: FontWeight.w800,
                       color: Color(0xFF494949),
@@ -224,16 +307,16 @@ class BerandaPage extends StatelessWidget {
             children: [
               _buildCategoryCard(
                 context,
-                'Sertifikasi\nTersedia',
+                'Sertifikasi',
                 Icons.verified,
-                '10',
+                _jumlahSertifikasi,
                 () => _navigateToListSertifikasi(context),
               ),
               _buildCategoryCard(
                 context,
-                'Pelatihan\nTersedia',
+                'Pelatihan',
                 Icons.school,
-                '10',
+                _jumlahPelatihan,
                 () => _navigateToListPelatihan(context),
               ),
             ],
@@ -243,41 +326,47 @@ class BerandaPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryCard(BuildContext context, String title, IconData icon,
-      String count, VoidCallback onTap) {
+  Widget _buildCategoryCard(
+    BuildContext context,
+    String title,
+    IconData icon,
+    int count,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
-      child: SizedBox(
-        width: 140,
-        child: Card(
-          elevation: 4,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.42,
+        decoration: BoxDecoration(
           color: const Color(0xFFEDF6FF),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(icon, size: 40, color: Colors.blue),
-                const SizedBox(height: 8),
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 14, color: Colors.black),
-                ),
-                Text(
-                  count,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 40,
+              color: const Color(0xFF1F4C97),
             ),
-          ),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '$count',
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1F4C97),
+              ),
+            ),
+          ],
         ),
       ),
     );

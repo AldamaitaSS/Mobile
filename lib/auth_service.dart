@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  final String baseUrl = 'http://192.168.51.73/web/public/api';
+  final String baseUrl = 'http://192.168.70.53/web/public/api';
 
   Future<Map<String, dynamic>?> login(String username, String password) async {
     try {
@@ -41,6 +41,11 @@ class AuthService {
       print('Error during login: $e');
       return null;
     }
+  }
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
   }
 
   Future<bool> logout() async {
