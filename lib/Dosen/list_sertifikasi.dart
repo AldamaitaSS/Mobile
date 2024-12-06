@@ -11,7 +11,7 @@ class ListSertifikasiPage extends StatefulWidget {
 
 class _ListSertifikasiPageState extends State<ListSertifikasiPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://192.168.51.73/web/public/api/sertifikasi';
+  final String baseUrl = 'http://192.168.70.53/web/public/api/sertifikasi';
   List<dynamic> sertifikasiList = [];
   bool _isLoading = true;
 

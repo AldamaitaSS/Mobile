@@ -17,9 +17,9 @@ class _BerandaScreenState extends State<BerandaScreen> {
   final AuthService _authService = AuthService();
 
   final String _sertifikasiUrl =
-      'http://192.168.51.73/web/public/api/sertifikasi';
+      'http://192.168.70.53/web/public/api/sertifikasi';
   final String _pelatihanUrl =
-      'http://192.168.51.73/web/public/api/pelatihan';
+      'http://192.168.70.53/web/public/api/pelatihan';
 
   String _namaPengguna = '';
   int _jumlahSertifikasi = 0;
@@ -308,14 +308,14 @@ class _BerandaScreenState extends State<BerandaScreen> {
               _buildCategoryCard(
                 context,
                 'Sertifikasi',
-                Icons.school,
+                Icons.verified,
                 _jumlahSertifikasi,
                 () => _navigateToListSertifikasi(context),
               ),
               _buildCategoryCard(
                 context,
                 'Pelatihan',
-                Icons.book,
+                Icons.school,
                 _jumlahPelatihan,
                 () => _navigateToListPelatihan(context),
               ),

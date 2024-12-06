@@ -12,7 +12,7 @@ class DetailPelatihanPage extends StatefulWidget {
 
 class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://192.168.70.95/web/public/api';
+  final String baseUrl = 'http://192.168.70.53/web/public/api';
   Map<String, dynamic>? _pelatihanData;
   bool _isLoading = true;
 
