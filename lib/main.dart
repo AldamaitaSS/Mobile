@@ -145,10 +145,6 @@ class _LoginPageState extends State<LoginPage> {
         final userLevel = result['user']['level']['id'];
         final nama = result['user']['nama'];
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login berhasil! Selamat datang $nama')),
-        );
-
         switch (userLevel) {
           case 2: // Pimpinan
             Navigator.pushReplacement(
