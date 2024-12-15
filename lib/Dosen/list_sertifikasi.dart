@@ -11,7 +11,7 @@ class ListSertifikasiPage extends StatefulWidget {
 
 class _ListSertifikasiPageState extends State<ListSertifikasiPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://192.168.70.53/web/public/api/sertifikasi';
+  final String baseUrl = 'http://127.0.0.1:8000/api/sertifikasi';
   List<dynamic> sertifikasiList = [];
   bool _isLoading = true;
 
@@ -63,11 +63,11 @@ class _ListSertifikasiPageState extends State<ListSertifikasiPage> {
                     final sertifikasi = sertifikasiList[index];
                     return PelatihanItem(
                       category:
-                          sertifikasi['bidang_nama'] ?? 'Tidak ada bidang',
+                          sertifikasi['jenis']?['jenis_nama'] ?? 'Tidak ada jenis',
                       title:
                           sertifikasi['nama_sertifikasi'] ?? 'Tidak ada nama',
                       institution:
-                          sertifikasi['jenis_nama'] ?? 'Tidak ada jenis',
+                          sertifikasi['vendor']?['vendor_nama'] ?? 'Tidak ada vendor',
                       onTap: () {
                         Navigator.push(
                           context,

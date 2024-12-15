@@ -11,7 +11,7 @@ class ListPelatihanPage extends StatefulWidget {
 
 class _ListPelatihanPageState extends State<ListPelatihanPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://192.168.70.53/web/public/api/pelatihan';
+  final String baseUrl = 'http://127.0.0.1:8000/api/pelatihan';
   List<dynamic> pelatihanList = [];
   bool _isLoading = true;
 
@@ -56,21 +56,23 @@ class _ListPelatihanPageState extends State<ListPelatihanPage> {
           : pelatihanList.isEmpty
               ? const Center(child: Text('Tidak ada data pelatihan'))
               : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   itemCount: pelatihanList.length,
                   itemBuilder: (context, index) {
                     final pelatihan = pelatihanList[index];
                     return PelatihanItem(
-                      category: pelatihan['bidang_nama'] ?? 'Tidak ada bidang',
+                      category: pelatihan['jenis']?['jenis_nama'] ??
+                          'Tidak ada jenis',
                       title: pelatihan['nama_pelatihan'] ?? 'Tidak ada nama',
-                      institution: pelatihan['level_pelatihan_nama'] ?? 'Tidak ada tingkat',
+                      institution: pelatihan['vendor']?['vendor_nama'] ??
+                          'Tidak ada vendor',
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => DetailPelatihanPage(
-                              pelatihanId: pelatihan['pelatihan_id']
-                            ),
+                                pelatihanId: pelatihan['pelatihan_id']),
                           ),
                         );
                       },
@@ -121,7 +123,8 @@ class PelatihanItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: const Color(0xFFDBE8FD),
                     borderRadius: BorderRadius.circular(8),

@@ -288,6 +288,7 @@ class _LoginPageState extends State<LoginPage> {
                               : const Text(
                                   'LOGIN',
                                   style: TextStyle(
+                                    color: Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),

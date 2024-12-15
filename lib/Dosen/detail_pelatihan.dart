@@ -12,7 +12,7 @@ class DetailPelatihanPage extends StatefulWidget {
 
 class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://192.168.70.53/web/public/api';
+  final String baseUrl = 'http://127.0.0.1:8000/api';
   Map<String, dynamic>? _pelatihanData;
   bool _isLoading = true;
 
@@ -73,8 +73,8 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            _pelatihanData!['bidang_nama'] ??
-                                'Tidak ada bidang',
+                            _pelatihanData!['jenis']?['jenis_nama'] ??
+                                'Tidak ada jenis',
                             style: const TextStyle(
                               color: Color(0xFF616161),
                               fontSize: 14,
@@ -89,19 +89,22 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                               fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                            _pelatihanData!['level_pelatihan_nama'] ??
-                                'Tidak ada tingkat',
+                            _pelatihanData!['vendor']?['vendor_nama'] ??
+                                'Tidak ada vendor',
                             style: const TextStyle(color: Colors.grey)),
                         const SizedBox(height: 16),
                         _buildInfoRow(
-                            'Vendor',
-                            _pelatihanData!['vendor_nama'] ??
-                                'Tidak ada vendor'),
+                            'Level Pelatihan',
+                            _pelatihanData!['level_pelatihan'] ??
+                                'Tidak ada level'),
                         _buildInfoRow('Tanggal',
                             _pelatihanData!['tanggal'] ?? 'Tidak ada tanggal'),
+                        _buildInfoRow('Lokasi',
+                            _pelatihanData!['lokasi'] ??
+                                'Tidak ada lokasi'),
                         const SizedBox(height: 30),
                         const Text(
-                          'Deskripsi Program',
+                          'Deskripsi Pelatihan',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -110,29 +113,6 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                           _pelatihanData!['deskripsi'] ?? 'Tidak ada deskripsi',
                           style: TextStyle(color: Colors.grey[600]),
                           textAlign: TextAlign.justify,
-                        ),
-                        const SizedBox(height: 30),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Implement registration logic
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1F4C97),
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 45, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              elevation: 3,
-                              textStyle: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            child: const Text('Daftar'),
-                          ),
                         ),
                       ],
                     ),

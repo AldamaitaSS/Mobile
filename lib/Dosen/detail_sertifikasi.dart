@@ -12,7 +12,7 @@ class DetailSertifikasiPage extends StatefulWidget {
 
 class _DetailSertifikasiPageState extends State<DetailSertifikasiPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://192.168.70.53/web/public/api';
+  final String baseUrl = 'http://127.0.0.1:8000/api';
   Map<String, dynamic>? _sertifikasiData;
   bool _isLoading = true;
 
@@ -76,8 +76,8 @@ class _DetailSertifikasiPageState extends State<DetailSertifikasiPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            _sertifikasiData!['bidang_nama'] ??
-                                'Tidak ada bidang',
+                            _sertifikasiData!['jenis']?['jenis_nama'] ??
+                                'Tidak ada jenis',
                             style: const TextStyle(
                               color: Color(0xFF616161),
                               fontSize: 14,
@@ -95,37 +95,28 @@ class _DetailSertifikasiPageState extends State<DetailSertifikasiPage> {
                         ),
                         // Jenis (BPPTIK)
                         Text(
-                            _sertifikasiData!['jenis_nama'] ??
-                                'Tidak ada jenis',
+                            _sertifikasiData!['vendor']?['vendor_nama'] ??
+                                'Tidak ada vendor',
                             style: const TextStyle(color: Colors.grey)),
                         const SizedBox(height: 16),
                         // Tanggal
                         _buildInfoRow(
-                            'Pendaftaran',
-                            _sertifikasiData!['tanggal'] ??
-                                'Tidak ada tanggal'),
+                            'Level Sertifikasi',
+                            _sertifikasiData!['level_sertifikasi'] ??
+                                'Tidak ada level'),
+                        _buildInfoRow('Tanggal',
+                            _sertifikasiData!['tanggal'] ?? 'Tidak ada tanggal'),
                         const SizedBox(height: 30),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Implement registration logic
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1F4C97),
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 45, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              elevation: 3,
-                              textStyle: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            child: const Text('Daftar'),
-                          ),
+                        const Text(
+                          'Deskripsi Sertifikasi',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _sertifikasiData!['deskripsi'] ?? 'Tidak ada deskripsi',
+                          style: TextStyle(color: Colors.grey[600]),
+                          textAlign: TextAlign.justify,
                         ),
                       ],
                     ),
