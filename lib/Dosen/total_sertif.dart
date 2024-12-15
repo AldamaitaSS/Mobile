@@ -1,11 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'detail_sertifikat.dart';
 
-class TotalSertifikasi extends StatelessWidget {
+class TotalSertifikasi extends StatefulWidget {
   const TotalSertifikasi({super.key});
 
   @override
+  State<TotalSertifikasi> createState() => _TotalSertifikasiState();
+}
+
+class _TotalSertifikasiState extends State<TotalSertifikasi> {
+  List<dynamic> dataPelatihan = [];
+  List<dynamic> dataSertifikasi = [];
+  String selectedCategory = 'pelatihan';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    const String apiUrl = 'http://127.0.0.1:8000/api/sertifikat';
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        setState(() {
+          dataPelatihan = jsonResponse['data_pelatihan'];
+          dataSertifikasi = jsonResponse['data_sertifikasi'];
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    List<dynamic> currentData =
+        selectedCategory == 'pelatihan' ? dataPelatihan : dataSertifikasi;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -21,37 +59,59 @@ class TotalSertifikasi extends StatelessWidget {
       ),
       body: Column(
         children: [
-          const SizedBox(height: 20),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+          // Filter Button
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                PelatihanItem(
-                  category: 'Programmer',
-                  title: 'Oracle Certified Associate (OCA)',
-                  institution: 'Oracle',
-                  onTap: () {},
+                FilterButton(
+                  text: 'Pelatihan',
+                  isSelected: selectedCategory == 'pelatihan',
+                  onTap: () {
+                    setState(() {
+                      selectedCategory = 'pelatihan';
+                    });
+                  },
                 ),
-                PelatihanItem(
-                  category: 'IT Governance',
-                  title: 'ITIL 4 Foundation',
-                  institution: 'Axelos',
+                const SizedBox(width: 12),
+                FilterButton(
+                  text: 'Sertifikasi',
+                  isSelected: selectedCategory == 'sertifikasi',
+                  onTap: () {
+                    setState(() {
+                      selectedCategory = 'sertifikasi';
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: currentData.length,
+              itemBuilder: (context, index) {
+                final item = currentData[index];
+                return PelatihanItem(
+                  category: selectedCategory == 'pelatihan'
+                      ? 'Pelatihan'
+                      : 'Sertifikasi',
+                  jenis: item['jenis']?['jenis_nama'],
+                  title: item['nama_sertif'],
+                  institution:
+                      item['nama_vendor'] ?? 'Tidak dapat memuat vendor',
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const DetailSertifikat(),
+                        builder: (context) => DetailSertifikat(data: item),
                       ),
                     );
                   },
-                ),
-                PelatihanItem(
-                  category: 'Web Developer',
-                  title: 'Junior Web Developer',
-                  institution: 'BPPTIK',
-                  onTap: () {},
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],
@@ -60,8 +120,44 @@ class TotalSertifikasi extends StatelessWidget {
   }
 }
 
+// Filter Button Widget
+class FilterButton extends StatelessWidget {
+  final String text;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const FilterButton({
+    super.key,
+    required this.text,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF1F4C97) : Colors.grey[300],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// List Item Widget
 class PelatihanItem extends StatelessWidget {
   final String category;
+  final String jenis;
   final String title;
   final String institution;
   final VoidCallback? onTap;
@@ -69,6 +165,7 @@ class PelatihanItem extends StatelessWidget {
   const PelatihanItem({
     super.key,
     required this.category,
+    required this.jenis,
     required this.title,
     required this.institution,
     this.onTap,
@@ -106,7 +203,7 @@ class PelatihanItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    category,
+                    jenis,
                     style: const TextStyle(
                       color: Color(0xFF616161),
                       fontSize: 12,
@@ -118,7 +215,7 @@ class PelatihanItem extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -127,21 +224,11 @@ class PelatihanItem extends StatelessWidget {
                 Text(
                   institution,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     color: Colors.grey,
                   ),
                 ),
               ],
-            ),
-            const Spacer(),
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.image, color: Colors.grey),
             ),
           ],
         ),

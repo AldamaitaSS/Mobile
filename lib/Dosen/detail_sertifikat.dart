@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class DetailSertifikat extends StatelessWidget {
-  const DetailSertifikat({super.key});
+  final dynamic data;
+
+  const DetailSertifikat({super.key, required this.data});
+
+  void _openPdf(String url, BuildContext context) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gagal membuka PDF: $url'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,26 +43,16 @@ class DetailSertifikat extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Center(
-                child: Icon(Icons.image, color: Colors.grey, size: 50),
-              ),
-            ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: const Color(0xFFDBE8FD),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text(
-                'IT Governance',
-                style: TextStyle(
+              child: Text(
+                data['jenis']?['jenis_nama'] ?? 'Tidak tersedia',
+                style: const TextStyle(
                   color: Color(0xFF616161),
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
@@ -54,18 +60,18 @@ class DetailSertifikat extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'ITIL 4 Foundation',
-              style: TextStyle(
-                fontSize: 22,
+            Text(
+              data['nama_sertif'] ?? 'Nama Sertifikat Tidak Tersedia',
+              style: const TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
             const SizedBox(height: 4),
-            const Text(
-              'Axelos',
-              style: TextStyle(
+            Text(
+              data['nama_vendor'] ?? 'Vendor Tidak Tersedia',
+              style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
               ),
@@ -73,11 +79,59 @@ class DetailSertifikat extends StatelessWidget {
             const SizedBox(height: 16),
             const Divider(),
             const SizedBox(height: 8),
-            buildCertificationDetailRow('Effective From', 'xx-xx-xxxx'),
-            buildCertificationDetailRow('Expiry Date', 'xx-xx-xxxx'),
-            buildCertificationDetailRow('Nomor Sertifikat', 'xxxxxxxxxxxxxxx'),
-            buildCertificationDetailRow('Nomor Peserta', 'xxxxxxxxxxxxxxx'),
-            buildCertificationDetailRow('Tanggal Pelatihan', 'xx-xx-xxxx'),
+            buildCertificationDetailRow('Nomor Sertifikat',
+                data['no_sertif'] ?? 'Tidak tersedia'),
+            buildCertificationDetailRow(
+                'Tanggal', data['tanggal'] ?? 'Tidak tersedia'),
+            buildCertificationDetailRow('Masa Berlaku',
+                data['masa_berlaku'] ?? 'Tidak tersedia'),
+            const SizedBox(height: 30),
+            Container(
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF00A4C6), // Warna latar biru
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.picture_as_pdf, color: Colors.white, size: 20),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'Dokumen PDF tersedia.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () {
+                      final pdfUrl = data['bukti'];
+                      if (pdfUrl != null && pdfUrl.isNotEmpty) {
+                        _openPdf(pdfUrl, context);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('File PDF tidak tersedia'),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text(
+                      'Buka PDF',
+                      style: TextStyle(
+                        color: Colors.white,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -94,13 +148,18 @@ class DetailSertifikat extends StatelessWidget {
             label,
             style: const TextStyle(
               fontWeight: FontWeight.w500,
-              color: Color(0xFF616161),
+              color: Colors.black,
             ),
           ),
-          Text(
-            value,
-            style: const TextStyle(
-              color: Colors.black87,
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+              ),
             ),
           ),
         ],

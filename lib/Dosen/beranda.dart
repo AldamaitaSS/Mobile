@@ -19,13 +19,16 @@ class _BerandaScreenState extends State<BerandaScreen> {
   final String baseUrl = 'http://127.0.0.1:8000/api';
   final String _sertifikasiUrl = 'http://127.0.0.1:8000/api/sertifikasi';
   final String _pelatihanUrl = 'http://127.0.0.1:8000/api/pelatihan';
+  final String _jumlahSertifikatUrl = 'http://127.0.0.1:8000/api/jumlah-sertifikat';
 
   String? _nama;
   int _jumlahSertifikasi = 0;
   int _jumlahPelatihan = 0;
+  int _jumlahSertifikat = 0;
   bool _isLoading = true;
   bool _isLoadingSertifikasi = true;
   bool _isLoadingPelatihan = true;
+  bool _isLoadingSertifikat = true;
 
   @override
   void initState() {
@@ -73,10 +76,12 @@ class _BerandaScreenState extends State<BerandaScreen> {
     setState(() {
       _isLoadingSertifikasi = true;
       _isLoadingPelatihan = true;
+      _isLoadingSertifikat = true;
     });
     await Future.wait([
       _fetchJumlahSertifikasi(),
       _fetchJumlahPelatihan(),
+      _fetchJumlahSertifikat(),
     ]);
   }
 
@@ -116,6 +121,25 @@ class _BerandaScreenState extends State<BerandaScreen> {
       print('Error: $e');
       setState(() {
         _isLoadingPelatihan = false;
+      });
+    }
+  }
+
+  Future<void> _fetchJumlahSertifikat() async {
+    try {
+      final response = await _dio.get(_jumlahSertifikatUrl);
+      if (response.statusCode == 200) {
+        setState(() {
+          _jumlahSertifikat = response.data['jumlah_sertifikat'];
+          _isLoadingSertifikat = false;
+        });
+      } else {
+        throw Exception('Gagal memuat jumlah sertifikat');
+      }
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        _isLoadingSertifikat = false;
       });
     }
   }
@@ -276,11 +300,11 @@ class _BerandaScreenState extends State<BerandaScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Padding(
-                  padding: EdgeInsets.only(left: 50.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 50.0),
                   child: Text(
-                    '0',
-                    style: TextStyle(
+                    _isLoadingSertifikat ? '' : '$_jumlahSertifikat',
+                    style: const TextStyle(
                       fontSize: 60,
                       fontWeight: FontWeight.w800,
                       color: Color(0xFF494949),
