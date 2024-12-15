@@ -11,7 +11,7 @@ class ChartPage extends StatefulWidget {
 
 class _ChartPageState extends State<ChartPage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://192.168.70.53/web/public/api';
+  final String baseUrl = 'http://127.0.0.1:8000/api';
   bool _isLoading = true;
   Map<String, dynamic> _statistics = {};
 

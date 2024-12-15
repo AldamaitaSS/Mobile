@@ -1,40 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
-class DetailPelatihanPage extends StatefulWidget {
-  final int pelatihanId;
+class DetailSertifikasiPage extends StatefulWidget {
+  final int sertifikasiId;
 
-  const DetailPelatihanPage({super.key, required this.pelatihanId});
+  const DetailSertifikasiPage({super.key, required this.sertifikasiId});
 
   @override
-  State<DetailPelatihanPage> createState() => _DetailPelatihanPageState();
+  State<DetailSertifikasiPage> createState() => _DetailSertifikasiPageState();
 }
 
-class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
+class _DetailSertifikasiPageState extends State<DetailSertifikasiPage> {
   final Dio _dio = Dio();
   final String baseUrl = 'http://127.0.0.1:8000/api';
-  Map<String, dynamic>? _pelatihanData;
+  Map<String, dynamic>? _sertifikasiData;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _fetchPelatihanDetail();
+    _fetchSertifikasiDetail();
   }
 
-  Future<void> _fetchPelatihanDetail() async {
+  Future<void> _fetchSertifikasiDetail() async {
     try {
       final response =
-          await _dio.get('$baseUrl/pelatihan/${widget.pelatihanId}');
+          await _dio.get('$baseUrl/sertifikasi/${widget.sertifikasiId}');
 
       setState(() {
-        _pelatihanData = response.data['data'];
+        _sertifikasiData =
+            response.data['data']; // Pastikan mengakses data dari respons
         _isLoading = false;
       });
     } catch (e) {
       setState(() {
         _isLoading = false;
       });
+      // Handle error
       print('Error fetching data: $e');
     }
   }
@@ -46,7 +48,7 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF1F4C97),
         foregroundColor: Colors.white,
-        title: const Text('Detail Pelatihan'),
+        title: const Text('Detail Sertifikasi'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -56,7 +58,7 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : _pelatihanData == null
+          : _sertifikasiData == null
               ? const Center(child: Text('Data tidak ditemukan'))
               : SingleChildScrollView(
                   child: Padding(
@@ -65,6 +67,7 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 8),
+                        // Bidang (Web Developer)
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 4),
@@ -73,7 +76,7 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            _pelatihanData!['jenis']?['jenis_nama'] ??
+                            _sertifikasiData!['jenis']?['jenis_nama'] ??
                                 'Tidak ada jenis',
                             style: const TextStyle(
                               color: Color(0xFF616161),
@@ -83,37 +86,37 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                           ),
                         ),
                         const SizedBox(height: 16),
+                        // Nama Sertifikasi (Junior Web Developer)
                         Text(
-                          _pelatihanData!['nama_pelatihan'] ?? 'Tidak ada nama',
+                          _sertifikasiData!['nama_sertifikasi'] ??
+                              'Tidak ada nama',
                           style: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold),
                         ),
+                        // Jenis (BPPTIK)
                         Text(
-                            _pelatihanData!['vendor']?['vendor_nama'] ??
+                            _sertifikasiData!['vendor']?['vendor_nama'] ??
                                 'Tidak ada vendor',
                             style: const TextStyle(color: Colors.grey)),
                         const SizedBox(height: 16),
+                        // Tanggal
                         _buildInfoRow(
-                            'Level Pelatihan',
-                            _pelatihanData!['level_pelatihan'] ??
+                            'Level Sertifikasi',
+                            _sertifikasiData!['level_sertifikasi'] ??
                                 'Tidak ada level'),
                         _buildInfoRow('Tanggal',
-                            _pelatihanData!['tanggal'] ?? 'Tidak ada tanggal'),
-                        _buildInfoRow('Lokasi',
-                            _pelatihanData!['lokasi'] ??
-                                'Tidak ada lokasi'),
+                            _sertifikasiData!['tanggal'] ?? 'Tidak ada tanggal'),
                         _buildInfoRow('Kuota Peserta',
-                            _pelatihanData!['kuota']?.toString() ?? 'Tidak ada kuota'),
-                        _buildInfoRow('Biaya', _pelatihanData!['biaya']?.toString() ?? 'Tidak ada biaya'),
+                            _sertifikasiData!['kuota']?.toString() ?? 'Tidak ada kuota'),
                         const SizedBox(height: 30),
                         const Text(
-                          'Deskripsi Pelatihan',
+                          'Deskripsi Sertifikasi',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          _pelatihanData!['deskripsi'] ?? 'Tidak ada deskripsi',
+                          _sertifikasiData!['deskripsi'] ?? 'Tidak ada deskripsi',
                           style: TextStyle(color: Colors.grey[600]),
                           textAlign: TextAlign.justify,
                         ),

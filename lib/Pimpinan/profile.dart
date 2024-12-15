@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import '../auth_service.dart';
 import 'edit_profile.dart';
+import '../main.dart'; 
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final Dio _dio = Dio();
-  final String baseUrl = 'http://192.168.70.53/web/public/api';
+  final String baseUrl = 'http://127.0.0.1:8000/api';
   final AuthService _authService = AuthService();
 
   String? _nama;
@@ -69,6 +70,14 @@ class _ProfilePageState extends State<ProfilePage> {
         SnackBar(content: Text('Gagal memuat data profil')),
       );
     }
+  }
+
+  Future<void> _logout() async {
+    await _authService.logout();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()), // Ganti dengan halaman login Anda
+    );
   }
 
   @override
@@ -162,46 +171,56 @@ class _ProfilePageState extends State<ProfilePage> {
                         null,
                       ),
                       SizedBox(height: 30),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditProfilePage(
-                                  userData: {
-                                    'nama': _nama,
-                                    'email': _email,
-                                    'username': _username,
-                                    'nip': _nip,
-                                    'avatar': _avatar,
-                                  },
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditProfilePage(
+                                    userData: {
+                                      'nama': _nama,
+                                      'email': _email,
+                                      'username': _username,
+                                      'nip': _nip,
+                                      'avatar': _avatar,
+                                    },
+                                  ),
                                 ),
+                              ).then((value) {
+                                if (value == true) {
+                                  _loadUserProfile();
+                                }
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF1F4C97),
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            ),
+                            child: Text(
+                              "Edit",
+                              style: TextStyle(
+                                color: Colors.white,
                               ),
-                            ).then((value) {
-                              if (value == true) {
-                                _loadUserProfile();
-                              }
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF1F4C97),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: Text(
-                            "EDIT",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                          SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: _logout,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            ),
+                            child: Text(
+                              "Logout",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),

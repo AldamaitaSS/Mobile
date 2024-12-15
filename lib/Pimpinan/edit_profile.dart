@@ -405,9 +405,9 @@ class _EditProfileState extends State<EditProfilePage> {
         }
       }
 
-      print('Sending request to: http://192.168.70.53/web/public/api/user/update');
+      print('Sending request to: http://127.0.0.1:8000/api/user/update');
       final response = await _dio.post(
-        'http://192.168.70.53/web/public/api/user/update',
+        'http://127.0.0.1:8000/api/user/update',
         data: formData,
         options: Options(
           headers: {

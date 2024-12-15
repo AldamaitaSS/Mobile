@@ -16,40 +16,68 @@ class _BerandaPageState extends State<BerandaPage> {
   final Dio _dio = Dio();
   final AuthService _authService = AuthService();
 
-  final String _sertifikasiUrl =
-      'http://192.168.70.53/web/public/api/sertifikasi';
-  final String _pelatihanUrl = 'http://192.168.70.53/web/public/api/pelatihan';
+  final String baseUrl = 'http://127.0.0.1:8000/api';
+  final String _sertifikasiUrl = 'http://127.0.0.1:8000/api/sertifikasi';
+  final String _pelatihanUrl = 'http://127.0.0.1:8000/api/pelatihan';
 
-  String _namaPengguna = '';
+  String? _nama;
   int _jumlahSertifikasi = 0;
   int _jumlahPelatihan = 0;
-
-  bool _isLoadingNama = true;
+  bool _isLoading = true;
   bool _isLoadingSertifikasi = true;
   bool _isLoadingPelatihan = true;
 
   @override
   void initState() {
     super.initState();
-    _fetchNamaPengguna();
-    _fetchJumlahSertifikasi();
-    _fetchJumlahPelatihan();
+    _loadUserProfile();
+    _fetchData();
   }
 
-  Future<void> _fetchNamaPengguna() async {
+  Future<void> _loadUserProfile() async {
     try {
-      final prefs = await _authService.getUserData();
-      final nama = prefs['nama'];
-      setState(() {
-        _namaPengguna = nama ?? '';
-        _isLoadingNama = false;
-      });
+      setState(() => _isLoading = true);
+
+      final token = await _authService.getToken();
+      if (token == null) throw Exception('Token not found');
+
+      final response = await _dio.get(
+        '$baseUrl/user',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200 && response.data['success']) {
+        final userData = response.data['user'];
+        setState(() {
+          _nama = userData['nama'];
+          _isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load profile');
+      }
     } catch (e) {
       print('Error: $e');
-      setState(() {
-        _isLoadingNama = false;
-      });
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memuat data pengguna')),
+      );
     }
+  }
+
+  Future<void> _fetchData() async {
+    setState(() {
+      _isLoadingSertifikasi = true;
+      _isLoadingPelatihan = true;
+    });
+    await Future.wait([
+      _fetchJumlahSertifikasi(),
+      _fetchJumlahPelatihan(),
+    ]);
   }
 
   Future<void> _fetchJumlahSertifikasi() async {
@@ -62,7 +90,7 @@ class _BerandaPageState extends State<BerandaPage> {
           _isLoadingSertifikasi = false;
         });
       } else {
-        throw Exception('Gagal memuat data dari server');
+        throw Exception('Gagal memuat data sertifikasi');
       }
     } catch (e) {
       print('Error: $e');
@@ -82,7 +110,7 @@ class _BerandaPageState extends State<BerandaPage> {
           _isLoadingPelatihan = false;
         });
       } else {
-        throw Exception('Gagal memuat data dari server');
+        throw Exception('Gagal memuat data pelatihan');
       }
     } catch (e) {
       print('Error: $e');
@@ -112,7 +140,7 @@ class _BerandaPageState extends State<BerandaPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    _isLoadingNama ? 'Memuat...' : 'Halo, $_namaPengguna',
+                    _isLoading ? 'Memuat...' : 'Halo, $_nama',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -131,6 +159,13 @@ class _BerandaPageState extends State<BerandaPage> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _fetchData,
+            tooltip: 'Perbarui Data',
+          ),
+        ],
       ),
       backgroundColor: const Color(0xFF1F4C97),
       body: SafeArea(
@@ -244,7 +279,7 @@ class _BerandaPageState extends State<BerandaPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 50.0),
                   child: Text(
-                    '20',
+                    '0',
                     style: const TextStyle(
                       fontSize: 60,
                       fontWeight: FontWeight.w800,
