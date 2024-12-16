@@ -80,7 +80,7 @@ class _DetailSertifikasiPageState extends State<DetailSertifikasiPage> {
                                 'Tidak ada jenis',
                             style: const TextStyle(
                               color: Color(0xFF616161),
-                              fontSize: 14,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -91,7 +91,7 @@ class _DetailSertifikasiPageState extends State<DetailSertifikasiPage> {
                           _sertifikasiData!['nama_sertifikasi'] ??
                               'Tidak ada nama',
                           style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         // Jenis (BPPTIK)
                         Text(

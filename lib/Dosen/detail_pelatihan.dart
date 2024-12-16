@@ -77,7 +77,7 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                                 'Tidak ada jenis',
                             style: const TextStyle(
                               color: Color(0xFF616161),
-                              fontSize: 14,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -86,7 +86,7 @@ class _DetailPelatihanPageState extends State<DetailPelatihanPage> {
                         Text(
                           _pelatihanData!['nama_pelatihan'] ?? 'Tidak ada nama',
                           style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         Text(
                             _pelatihanData!['vendor']?['vendor_nama'] ??

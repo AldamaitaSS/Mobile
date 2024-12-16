@@ -75,10 +75,23 @@ class JenisUploadScreen extends StatelessWidget {
                             15), // Atur lengkungan di sini
                       ),
                     ),
-                    child: Text(
-                      'Sertifikasi',
-                      style: TextStyle(
-                          color: Colors.white), // Ubah teks menjadi putih
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.verified, // Ikon untuk Sertifikasi
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                        SizedBox(height: 10), // Jarak antara ikon dan teks
+                        Text(
+                          'Sertifikasi',
+                          style: TextStyle(
+                            color: Colors.white, // Ubah teks menjadi putih
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -106,10 +119,23 @@ class JenisUploadScreen extends StatelessWidget {
                             15), // Atur lengkungan di sini
                       ),
                     ),
-                    child: Text(
-                      'Pelatihan',
-                      style: TextStyle(
-                          color: Colors.white), // Ubah teks menjadi putih
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.school, // Ikon untuk Pelatihan
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                        SizedBox(height: 10), // Jarak antara ikon dan teks
+                        Text(
+                          'Pelatihan',
+                          style: TextStyle(
+                            color: Colors.white, // Ubah teks menjadi putih
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
