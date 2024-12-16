@@ -19,7 +19,8 @@ class _BerandaScreenState extends State<BerandaScreen> {
   final String baseUrl = 'http://127.0.0.1:8000/api';
   final String _sertifikasiUrl = 'http://127.0.0.1:8000/api/sertifikasi';
   final String _pelatihanUrl = 'http://127.0.0.1:8000/api/pelatihan';
-  final String _jumlahSertifikatUrl = 'http://127.0.0.1:8000/api/jumlah-sertifikat';
+  final String _jumlahSertifikatUrl =
+      'http://127.0.0.1:8000/api/jumlah-sertifikat';
 
   String? _nama;
   int _jumlahSertifikasi = 0;
@@ -127,20 +128,41 @@ class _BerandaScreenState extends State<BerandaScreen> {
 
   Future<void> _fetchJumlahSertifikat() async {
     try {
-      final response = await _dio.get(_jumlahSertifikatUrl);
+      // Mendapatkan token dari AuthService
+      final authService = AuthService();
+      final token = await authService.getToken();
+      if (token == null) throw Exception('Token not found');
+
+      // Melakukan permintaan API dengan header Authorization
+      final response = await _dio.get(
+        _jumlahSertifikatUrl,
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      // Memproses respons API
       if (response.statusCode == 200) {
         setState(() {
           _jumlahSertifikat = response.data['jumlah_sertifikat'];
           _isLoadingSertifikat = false;
         });
       } else {
+        print('Failed to load jumlah sertifikat with status: ${response.statusCode}');
         throw Exception('Gagal memuat jumlah sertifikat');
       }
     } catch (e) {
+      // Menangani error
       print('Error: $e');
       setState(() {
         _isLoadingSertifikat = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memuat jumlah sertifikat')),
+      );
     }
   }
 

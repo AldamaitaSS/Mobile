@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../auth_service.dart';
 import 'detail_sertifikat.dart';
 
 class TotalSertifikasi extends StatefulWidget {
@@ -23,19 +24,39 @@ class _TotalSertifikasiState extends State<TotalSertifikasi> {
 
   Future<void> fetchData() async {
     const String apiUrl = 'http://127.0.0.1:8000/api/sertifikat';
+
     try {
-      final response = await http.get(Uri.parse(apiUrl));
+      // Memuat token dari AuthService
+      final authService = AuthService(); // Instansiasi AuthService
+      final token = await authService.getToken();
+      if (token == null) throw Exception('Token not found');
+
+      // Melakukan permintaan API dengan header Authorization
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      // Memproses respons API
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
-          dataPelatihan = jsonResponse['data_pelatihan'];
-          dataSertifikasi = jsonResponse['data_sertifikasi'];
+          dataPelatihan = jsonResponse['data_pelatihan'] ?? [];
+          dataSertifikasi = jsonResponse['data_sertifikasi'] ?? [];
         });
       } else {
+        print('Failed to load data with status: ${response.statusCode}');
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      print(e);
+      // Menangani error
+      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memuat data pelatihan')),
+      );
     }
   }
 
