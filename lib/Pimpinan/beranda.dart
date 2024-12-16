@@ -23,9 +23,11 @@ class _BerandaPageState extends State<BerandaPage> {
   String? _nama;
   int _jumlahSertifikasi = 0;
   int _jumlahPelatihan = 0;
+  int _jumlahDosen = 0;
   bool _isLoading = true;
   bool _isLoadingSertifikasi = true;
   bool _isLoadingPelatihan = true;
+  bool _isLoadingDosen = true;
 
   @override
   void initState() {
@@ -73,10 +75,12 @@ class _BerandaPageState extends State<BerandaPage> {
     setState(() {
       _isLoadingSertifikasi = true;
       _isLoadingPelatihan = true;
+      _isLoadingDosen = true;
     });
     await Future.wait([
       _fetchJumlahSertifikasi(),
       _fetchJumlahPelatihan(),
+      _fetchJumlahDosen(),
     ]);
   }
 
@@ -117,6 +121,30 @@ class _BerandaPageState extends State<BerandaPage> {
       setState(() {
         _isLoadingPelatihan = false;
       });
+    }
+  }
+
+  Future<void> _fetchJumlahDosen() async {
+    final String _dosenUrl = '$baseUrl/dosen';
+    try {
+      final response = await _dio.get(_dosenUrl);
+      if (response.statusCode == 200 && response.data['success']) {
+        final data = response.data['data'] as List;
+        setState(() {
+          _jumlahDosen = data.length;
+          _isLoadingDosen = false;
+        });
+      } else {
+        throw Exception('Gagal memuat data dosen');
+      }
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        _isLoadingDosen = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memuat data dosen')),
+      );
     }
   }
 
@@ -279,7 +307,7 @@ class _BerandaPageState extends State<BerandaPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 50.0),
                   child: Text(
-                    '0',
+                    _isLoadingDosen ? '' : '$_jumlahDosen',
                     style: const TextStyle(
                       fontSize: 60,
                       fontWeight: FontWeight.w800,
