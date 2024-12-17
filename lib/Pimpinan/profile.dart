@@ -105,10 +105,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.grey[300],
-                        child: _avatar != null && _avatar!.isNotEmpty
-                            ? ClipOval(
-                                child: Image.network(
-                                  'http://127.0.0.1:8000/storage/avatars/$_avatar',
+                        child: ClipOval(
+                          child: _avatar != null && _avatar!.isNotEmpty
+                              ? Image.network(
+                                  'http://127.0.0.1:8000/storage/photos/$_avatar',
                                   width: 100,
                                   height: 100,
                                   fit: BoxFit.cover,
@@ -119,29 +119,24 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: Colors.white,
                                     );
                                   },
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
+                                  loadingBuilder: (context, child, loadingProgress) {
                                     if (loadingProgress == null) return child;
                                     return Center(
                                       child: CircularProgressIndicator(
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
+                                        value: loadingProgress.expectedTotalBytes != null
+                                            ? loadingProgress.cumulativeBytesLoaded /
+                                                (loadingProgress.expectedTotalBytes!)
                                             : null,
                                       ),
                                     );
                                   },
+                                )
+                              : Icon(
+                                  Icons.person,
+                                  size: 50,
+                                  color: Colors.white,
                                 ),
-                              )
-                            : Icon(
-                                Icons.person,
-                                size: 50,
-                                color: Colors.white,
-                              ),
+                        ),
                       ),
                       SizedBox(height: 20),
                       Text(

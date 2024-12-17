@@ -69,11 +69,16 @@ class _DetailDosenState extends State<DetailDosenPage> {
                         CircleAvatar(
                           radius: 35,
                           backgroundColor: Colors.grey[300],
-                          child: const Icon(
-                            Icons.person,
-                            size: 35,
-                            color: Colors.white,
-                          ),
+                          backgroundImage: _dosenDetail['avatar'] != null
+                              ? NetworkImage('http://127.0.0.1:8000/storage/photos/${_dosenDetail['avatar']}')
+                              : null, // Gambar dari server jika tersedia
+                          child: _dosenDetail['avatar'] == null
+                              ? const Icon(
+                                  Icons.person,
+                                  size: 35,
+                                  color: Colors.white,
+                                )
+                              : null, // Jika avatar kosong, tampilkan icon
                         ),
                         const SizedBox(width: 16),
                         Expanded(

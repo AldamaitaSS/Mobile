@@ -126,7 +126,7 @@ class _EditProfileState extends State<EditProfilePage> {
                             ? FileImage(_imageFile!)
                             : (_avatar != null && _avatar!.isNotEmpty
                                 ? NetworkImage(
-                                        'http://127.0.0.1:8000/storage/avatars/$_avatar')
+                                        'http://127.0.0.1:8000/storage/photos/$_avatar')
                                     as ImageProvider
                                 : null),
                         child: (_imageFile == null &&
