@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import '../auth_service.dart';
 import 'edit_profile.dart';
+<<<<<<< HEAD
+=======
+import '../main.dart'; 
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -71,16 +75,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+<<<<<<< HEAD
+=======
+  Future<void> _logout() async {
+    await _authService.logout();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()), // Ganti dengan halaman login Anda
+    );
+  }
+
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Color(0xFF1F4C97),
+<<<<<<< HEAD
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
+=======
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
         title: Text(
           "Profil",
           style: TextStyle(color: Colors.white),
@@ -100,10 +118,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.grey[300],
+<<<<<<< HEAD
                         child: _avatar != null && _avatar!.isNotEmpty
                             ? ClipOval(
                                 child: Image.network(
                                   'http://127.0.0.1:8000/storage/avatars/$_avatar',
+=======
+                        child: ClipOval(
+                          child: _avatar != null && _avatar!.isNotEmpty
+                              ? Image.network(
+                                  'http://127.0.0.1:8000/storage/photos/$_avatar',
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                                   width: 100,
                                   height: 100,
                                   fit: BoxFit.cover,
@@ -114,18 +139,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       color: Colors.white,
                                     );
                                   },
+<<<<<<< HEAD
                                   loadingBuilder:
                                       (context, child, loadingProgress) {
+=======
+                                  loadingBuilder: (context, child, loadingProgress) {
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                                     if (loadingProgress == null) return child;
                                     return Center(
                                       child: CircularProgressIndicator(
                                         value: loadingProgress.expectedTotalBytes != null
                                             ? loadingProgress.cumulativeBytesLoaded /
+<<<<<<< HEAD
                                                 loadingProgress.expectedTotalBytes!
+=======
+                                                (loadingProgress.expectedTotalBytes!)
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                                             : null,
                                       ),
                                     );
                                   },
+<<<<<<< HEAD
                                 ),
                               )
                             : Icon(
@@ -133,6 +167,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 size: 50,
                                 color: Colors.white,
                               ),
+=======
+                                )
+                              : Icon(
+                                  Icons.person,
+                                  size: 50,
+                                  color: Colors.white,
+                                ),
+                        ),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                       ),
                       SizedBox(height: 20),
                       Text(
@@ -162,6 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         null,
                       ),
                       SizedBox(height: 30),
+<<<<<<< HEAD
                       Align(
                         alignment: Alignment.centerRight,
                         child: ElevatedButton(
@@ -201,6 +245,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         ),
+=======
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditProfileScreen(
+                                    userData: {
+                                      'nama': _nama,
+                                      'email': _email,
+                                      'username': _username,
+                                      'nip': _nip,
+                                      'avatar': _avatar,
+                                    },
+                                  ),
+                                ),
+                              ).then((value) {
+                                if (value == true) {
+                                  _loadUserProfile();
+                                }
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF1F4C97),
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            ),
+                            child: Text(
+                              "Edit",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: _logout,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            ),
+                            child: Text(
+                              "Logout",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                       ),
                     ],
                   ),

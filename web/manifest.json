@@ -1,6 +1,6 @@
 {
-    "name": "project_sertifikasi",
-    "short_name": "project_sertifikasi",
+    "name": "project",
+    "short_name": "project",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

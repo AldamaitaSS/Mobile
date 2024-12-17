@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import 'package:flutter/material.dart';
 
 // class EditProfilePage extends StatefulWidget {
@@ -651,6 +652,8 @@
 //   }
 // }
 
+=======
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
@@ -779,7 +782,11 @@ class _EditProfileState extends State<EditProfilePage> {
                             ? FileImage(_imageFile!)
                             : (_avatar != null && _avatar!.isNotEmpty
                                 ? NetworkImage(
+<<<<<<< HEAD
                                         'http://127.0.0.1:8000/storage/avatars/$_avatar')
+=======
+                                        'http://127.0.0.1:8000/storage/photos/$_avatar')
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                                     as ImageProvider
                                 : null),
                         child: (_imageFile == null &&
@@ -1127,4 +1134,8 @@ class _EditProfileState extends State<EditProfilePage> {
     _confirmPasswordController.dispose();
     super.dispose();
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98

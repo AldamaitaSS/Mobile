@@ -70,10 +70,13 @@ class _ChartPageState extends State<ChartPage> {
           'Statistik',
           style: TextStyle(color: Colors.white),
         ),
+<<<<<<< HEAD
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
+=======
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())

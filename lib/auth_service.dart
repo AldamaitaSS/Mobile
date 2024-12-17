@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import 'dart:convert';
 // import 'package:http/http.dart' as http;
 // import 'package:shared_preferences/shared_preferences.dart';
@@ -96,6 +97,8 @@
 //   }
 // }
 
+=======
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -122,7 +125,10 @@ class AuthService {
 
         if (data['success'] == true) {
           final prefs = await SharedPreferences.getInstance();
+<<<<<<< HEAD
           // Simpan dengan key yang konsisten
+=======
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
           await prefs.setString('token', data['token']);
           await prefs.setString('user_id', data['user']['user_id'].toString());
           await prefs.setString('username', data['user']['username']);
@@ -142,7 +148,10 @@ class AuthService {
     }
   }
 
+<<<<<<< HEAD
   // Gunakan key 'token' yang konsisten
+=======
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
@@ -159,11 +168,26 @@ class AuthService {
     }
   }
 
+<<<<<<< HEAD
+=======
+  Future<bool> isLoggedIn() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString('token') != null;
+    } catch (e) {
+      return false;
+    }
+  }
+
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
   Future<Map<String, dynamic>> getUserData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       return {
+<<<<<<< HEAD
         'token': prefs.getString('token'),
+=======
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
         'user_id': prefs.getString('user_id'),
         'username': prefs.getString('username'),
         'nama': prefs.getString('nama'),

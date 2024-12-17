@@ -10,6 +10,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+<<<<<<< HEAD
+=======
+  const MyApp({super.key});
+
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,6 +30,11 @@ class MyApp extends StatelessWidget {
 }
 
 class SplashScreen extends StatefulWidget {
+<<<<<<< HEAD
+=======
+  const SplashScreen({super.key});
+
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -33,7 +43,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
     Timer(Duration(seconds: 5), () {
+=======
+    Timer(const Duration(seconds: 5), () {
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => LoginPage()),
       );
@@ -44,7 +58,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+<<<<<<< HEAD
         decoration: BoxDecoration(
+=======
+        decoration: const BoxDecoration(
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -60,7 +78,11 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+<<<<<<< HEAD
                       Text(
+=======
+                      const Text(
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                         'SISTEM SERTIFIKASI',
                         style: TextStyle(
                           fontSize: 22,
@@ -68,14 +90,23 @@ class _SplashScreenState extends State<SplashScreen> {
                           color: Colors.white,
                         ),
                       ),
+<<<<<<< HEAD
                       SizedBox(height: 170),
+=======
+                      const SizedBox(height: 170),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                       Image.asset(
                         'asset/logo_polinema.png',
                         width: 100,
                         height: 100,
                       ),
+<<<<<<< HEAD
                       SizedBox(height: 170),
                       Text(
+=======
+                      const SizedBox(height: 170),
+                      const Text(
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                         'JTI POLINEMA',
                         style: TextStyle(
                           fontSize: 18,
@@ -86,8 +117,13 @@ class _SplashScreenState extends State<SplashScreen> {
                     ],
                   ),
                 ),
+<<<<<<< HEAD
                 Padding(
                   padding: const EdgeInsets.only(bottom: 40.0),
+=======
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 40.0),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
@@ -101,6 +137,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
+<<<<<<< HEAD
 // class LoginPage extends StatelessWidget {
 //   final TextEditingController _nipController = TextEditingController();
 //   final TextEditingController _passwordController = TextEditingController();
@@ -246,6 +283,11 @@ class _SplashScreenState extends State<SplashScreen> {
 //   }
 // }
 class LoginPage extends StatefulWidget {
+=======
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -260,7 +302,11 @@ class _LoginPageState extends State<LoginPage> {
   void _login(BuildContext context) async {
     if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
+<<<<<<< HEAD
         SnackBar(content: Text('Username dan Password harus diisi')),
+=======
+        const SnackBar(content: Text('Username dan Password harus diisi')),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
       );
       return;
     }
@@ -283,10 +329,13 @@ class _LoginPageState extends State<LoginPage> {
         final userLevel = result['user']['level']['id'];
         final nama = result['user']['nama'];
 
+<<<<<<< HEAD
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Login berhasil! Selamat datang $nama')),
         );
 
+=======
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
         switch (userLevel) {
           case 2: // Pimpinan
             Navigator.pushReplacement(
@@ -303,12 +352,20 @@ class _LoginPageState extends State<LoginPage> {
             break;
           default:
             ScaffoldMessenger.of(context).showSnackBar(
+<<<<<<< HEAD
               SnackBar(content: Text('Level pengguna tidak dikenali')),
+=======
+              const SnackBar(content: Text('Level pengguna tidak dikenali')),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
             );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
+<<<<<<< HEAD
           SnackBar(content: Text('Username atau Password salah')),
+=======
+          const SnackBar(content: Text('Username atau Password salah')),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
         );
       }
     } catch (e) {
@@ -317,7 +374,11 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
+<<<<<<< HEAD
         SnackBar(content: Text('Terjadi kesalahan. Silakan coba lagi')),
+=======
+        const SnackBar(content: Text('Terjadi kesalahan. Silakan coba lagi')),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
       );
     }
   }
@@ -326,7 +387,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+<<<<<<< HEAD
         decoration: BoxDecoration(
+=======
+        decoration: const BoxDecoration(
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -347,14 +412,23 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
+<<<<<<< HEAD
                       SizedBox(height: 10),
+=======
+                      const SizedBox(height: 10),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                       Image.asset(
                         'asset/logo_polinema.png',
                         width: 70,
                         height: 70,
                       ),
+<<<<<<< HEAD
                       SizedBox(height: 15),
                       Text(
+=======
+                      const SizedBox(height: 15),
+                      const Text(
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                         'JTI POLINEMA',
                         style: TextStyle(
                           fontSize: 16,
@@ -362,7 +436,11 @@ class _LoginPageState extends State<LoginPage> {
                           color: Color(0xFF1F4C97),
                         ),
                       ),
+<<<<<<< HEAD
                       SizedBox(height: 20),
+=======
+                      const SizedBox(height: 20),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                       TextField(
                         controller: _usernameController,
                         decoration: InputDecoration(
@@ -370,14 +448,22 @@ class _LoginPageState extends State<LoginPage> {
                           filled: true,
                           fillColor: Colors.grey[200],
                           prefixIcon:
+<<<<<<< HEAD
                               Icon(Icons.person, color: Color(0xFF1F4C97)),
+=======
+                              const Icon(Icons.person, color: Color(0xFF1F4C97)),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none,
                           ),
                         ),
                       ),
+<<<<<<< HEAD
                       SizedBox(height: 15),
+=======
+                      const SizedBox(height: 15),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                       TextField(
                         controller: _passwordController,
                         obscureText: _obscureText,
@@ -386,13 +472,21 @@ class _LoginPageState extends State<LoginPage> {
                           filled: true,
                           fillColor: Colors.grey[200],
                           prefixIcon:
+<<<<<<< HEAD
                               Icon(Icons.lock, color: Color(0xFF1F4C97)),
+=======
+                              const Icon(Icons.lock, color: Color(0xFF1F4C97)),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureText
                                   ? Icons.visibility
                                   : Icons.visibility_off,
+<<<<<<< HEAD
                               color: Color(0xFF1F4C97),
+=======
+                              color: const Color(0xFF1F4C97),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                             ),
                             onPressed: () {
                               setState(() {
@@ -406,12 +500,17 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+<<<<<<< HEAD
                       SizedBox(height: 30),
+=======
+                      const SizedBox(height: 30),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : () => _login(context),
                           style: ElevatedButton.styleFrom(
+<<<<<<< HEAD
                             backgroundColor: Color(0xFF1F4C97),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -420,6 +519,16 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: _isLoading
                               ? SizedBox(
+=======
+                            backgroundColor: const Color(0xFF1F4C97),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                          ),
+                          child: _isLoading
+                              ? const SizedBox(
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                                   height: 20,
                                   width: 20,
                                   child: CircularProgressIndicator(
@@ -427,9 +536,16 @@ class _LoginPageState extends State<LoginPage> {
                                     strokeWidth: 2,
                                   ),
                                 )
+<<<<<<< HEAD
                               : Text(
                                   'LOGIN',
                                   style: TextStyle(
+=======
+                              : const Text(
+                                  'LOGIN',
+                                  style: TextStyle(
+                                    color: Colors.white,
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -453,6 +569,7 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController.dispose();
     super.dispose();
   }
+<<<<<<< HEAD
 }
 // import 'package:flutter/material.dart';
 // import 'package:dio/dio.dart';
@@ -757,3 +874,6 @@ class _LoginPageState extends State<LoginPage> {
 //     );
 //   }
 // }
+=======
+}
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98

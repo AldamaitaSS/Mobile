@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '../Pimpinan/beranda.dart';
+<<<<<<< HEAD
 import '../Pimpinan/notifikasi.dart';
+=======
+// import '../Pimpinan/notifikasi.dart';
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
 import '../Pimpinan/profile.dart';
 import '../Pimpinan/statistik.dart'; // Tambahkan import statistik
 
@@ -15,7 +19,11 @@ class _NavigasiState extends State<Navigasi> {
   static final List<Widget> _pages = [
     BerandaPage(),
     ChartPage(), 
+<<<<<<< HEAD
     NotifikasiPage(),
+=======
+    // NotifikasiPage(),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
     ProfilePage(),
   ];
 
@@ -47,10 +55,17 @@ class _NavigasiState extends State<Navigasi> {
               icon: Icon(Icons.insert_chart), // Icon untuk statistik
               label: 'Statistik',
             ),
+<<<<<<< HEAD
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications_active),
               label: 'Notifikasi',
             ),
+=======
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.notifications_active),
+            //   label: 'Notifikasi',
+            // ),
+>>>>>>> cc6aa6fab2f9df8bec982b4f8429905c27d73e98
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'Profile',
