@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'beranda.dart';
 import 'jenis_upload.dart';
-import 'notifikasi.dart';
+// import 'notifikasi.dart';
 import 'profile.dart';
 
 class Navigasi extends StatefulWidget {
@@ -17,7 +17,7 @@ class _NavigasiState extends State<Navigasi> {
   static final List<Widget> _pages = [
     const BerandaScreen(),
     JenisUploadScreen(),
-    NotifikasiScreen(),
+    // NotifikasiScreen(),
     ProfileScreen(),
   ];
 
@@ -49,10 +49,10 @@ class _NavigasiState extends State<Navigasi> {
               icon: Icon(Icons.description),
               label: 'Sertifikasi',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_active),
-              label: 'Notifikasi',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.notifications_active),
+            //   label: 'Notifikasi',
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'Profil',
