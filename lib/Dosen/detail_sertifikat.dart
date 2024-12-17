@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class DetailSertifikat extends StatelessWidget {
   final dynamic data;
 
@@ -86,52 +85,74 @@ class DetailSertifikat extends StatelessWidget {
             buildCertificationDetailRow('Masa Berlaku',
                 data['masa_berlaku'] ?? 'Tidak tersedia'),
             const SizedBox(height: 30),
-            Container(
-              padding: const EdgeInsets.all(12),
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: const Color(0xFF00A4C6), // Warna latar biru
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.picture_as_pdf, color: Colors.white, size: 20),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'Dokumen PDF tersedia.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: () {
-                      final pdfUrl = data['bukti'];
-                      if (pdfUrl != null && pdfUrl.isNotEmpty) {
-                        _openPdf(pdfUrl, context);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('File PDF tidak tersedia'),
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text(
-                      'Buka PDF',
-                      style: TextStyle(
-                        color: Colors.white,
-                        decoration: TextDecoration.underline,
-                        fontWeight: FontWeight.bold,
+            if (data['bukti'] != null && data['bukti'].isNotEmpty)
+              data['bukti'].endsWith('.pdf')
+                  ? Container(
+                      padding: const EdgeInsets.all(12),
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF00A4C6),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.picture_as_pdf,
+                              color: Colors.white, size: 20),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Dokumen PDF tersedia.',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          GestureDetector(
+                            onTap: () => _openPdf(data['bukti'], context),
+                            child: const Text(
+                              'Buka PDF',
+                              style: TextStyle(
+                                color: Colors.white,
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(
+                      padding: const EdgeInsets.all(12),
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Foto Bukti Sertifikat:',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              data['bukti'],
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Text('Gagal memuat gambar'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
           ],
         ),
       ),

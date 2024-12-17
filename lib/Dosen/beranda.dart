@@ -23,6 +23,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
       'http://127.0.0.1:8000/api/jumlah-sertifikat';
 
   String? _nama;
+  String? _avatar;
   int _jumlahSertifikasi = 0;
   int _jumlahPelatihan = 0;
   int _jumlahSertifikat = 0;
@@ -59,6 +60,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
         final userData = response.data['user'];
         setState(() {
           _nama = userData['nama'];
+          _avatar = userData['avatar'];
           _isLoading = false;
         });
       } else {
@@ -174,10 +176,41 @@ class _BerandaScreenState extends State<BerandaScreen> {
         foregroundColor: Colors.white,
         title: Row(
           children: [
-            const CircleAvatar(
-              radius: 18,
-              backgroundColor: Color(0xFFD3D3D3),
-              child: Icon(Icons.person, color: Color(0xFF1F4C97), size: 30),
+            CircleAvatar(
+              radius: 18, // Increased from 18 to match profile screen
+              backgroundColor: Colors.grey[300],
+              child: ClipOval(
+                child: _avatar != null && _avatar!.isNotEmpty
+                    ? Image.network(
+                        'http://127.0.0.1:8000/storage/photos/$_avatar',
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.white,
+                          );
+                        },
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      (loadingProgress.expectedTotalBytes!)
+                                  : null,
+                            ),
+                          );
+                        },
+                      )
+                    : Icon(
+                        Icons.person,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+              ),
             ),
             const SizedBox(width: 10),
             Expanded(
