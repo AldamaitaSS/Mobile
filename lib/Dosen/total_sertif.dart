@@ -70,7 +70,7 @@ class _TotalSertifikasiState extends State<TotalSertifikasi> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF1F4C97),
         foregroundColor: Colors.white,
-        title: const Text('Total Sertifikasi'),
+        title: const Text('Total Sertifikat'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

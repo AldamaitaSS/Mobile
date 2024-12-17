@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'form_upload.dart'; // Import halaman form_upload
+import 'package:project/Dosen/upload_sertifikasi.dart';
+import 'upload_pelatihan.dart'; // Import halaman form_upload
 
 class JenisUploadScreen extends StatelessWidget {
   const JenisUploadScreen({super.key});
@@ -62,7 +63,7 @@ class JenisUploadScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              CertificationUploadForm(jenis: 'Sertifikasi'),
+                              SertifikasiUploadForm(jenis: 'Sertifikasi'),
                         ),
                       );
                     },
@@ -106,7 +107,7 @@ class JenisUploadScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              CertificationUploadForm(jenis: 'Pelatihan'),
+                              PelatihanUploadForm(jenis: 'Pelatihan'),
                         ),
                       );
                     },
